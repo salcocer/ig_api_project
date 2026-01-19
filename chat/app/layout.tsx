@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // TODO: Replace with actual theme state (e.g., localStorage, user preferences)
-  const light_theme = false;
+  const light_theme = true;
 
   return (
     <html lang="en" className={light_theme ? "" : "dark"}>
