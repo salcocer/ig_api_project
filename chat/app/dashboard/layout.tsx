@@ -10,12 +10,12 @@ export default function MainLayout({
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Left Sidebar - SideMenu */}
-      <div className="w-[5%] min-w-[60px] border-r border-gray-300">
+      <div className="w-[80px] border-r border-gray-300">
         <SideMenu />
       </div>
 
       {/* Middle Section - Profile, Stories, Messages */}
-      <div className="w-[25%] min-w-[360px] border-r border-gray-300 flex flex-col">
+      <div className="w-[440px] min-w-[360px] border-r border-gray-300 flex flex-col">
         <Profile />
         <Messages />
       </div>
