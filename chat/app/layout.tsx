@@ -11,9 +11,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // TODO: Replace with actual theme state (e.g., localStorage, user preferences)
+  const light_theme = false;
+
   return (
-    <html lang="en">
-      <body className={`antialiased`}>{children}</body>
+    <html lang="en" className={light_theme ? "" : "dark"}>
+      <body className="antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        {children}
+      </body>
     </html>
   );
 }
