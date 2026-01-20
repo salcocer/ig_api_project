@@ -30,9 +30,7 @@ export default function MainLayout({
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="text-center">
-          <h1 className="text-4xl font-serif mb-8 text-gray-900 dark:text-gray-100">
-            Instagram
-          </h1>
+          <h1 className="text-4xl font-serif mb-8 text-gray-900">Instagram</h1>
           {/* Your modal content here */}
         </div>
       </Modal>

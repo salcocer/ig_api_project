@@ -10,8 +10,8 @@ export default function SideMenu({ openModal }: { openModal: () => void }) {
           <Image
             src="icon.svg"
             alt="app_icon"
-            width={24}
-            height={24}
+            width={40}
+            height={40}
             className="dark:invert"
           />
         </button>
@@ -20,8 +20,8 @@ export default function SideMenu({ openModal }: { openModal: () => void }) {
         <Image
           src="close.svg"
           alt="close_icon"
-          width={24}
-          height={24}
+          width={40}
+          height={40}
           className="dark:invert"
         />
       </div>
@@ -29,8 +29,8 @@ export default function SideMenu({ openModal }: { openModal: () => void }) {
         <Image
           src="send.svg"
           alt="send_icon"
-          width={24}
-          height={24}
+          width={40}
+          height={40}
           className="dark:invert"
         />
       </div>
@@ -38,8 +38,8 @@ export default function SideMenu({ openModal }: { openModal: () => void }) {
         <Image
           src="settings.svg"
           alt="settings_icon"
-          width={24}
-          height={24}
+          width={40}
+          height={40}
           className="dark:invert"
         />
       </div>
