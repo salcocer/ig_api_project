@@ -1,6 +1,6 @@
 export default function LogIn() {
   return (
-    <div className="flex items-center justify-center bg-white dark:bg-gray-900 h-full">
+    <div className="flex items-center justify-center bg-color  h-full">
       <div className="w-full max-w-sm p-8">
         <div className="text-center mb-8">
           <h1 className="text-5xl font-serif mb-8 text-gray-900 dark:text-gray-100">
@@ -12,12 +12,12 @@ export default function LogIn() {
           <input
             type="text"
             placeholder="Phone number, username, or email"
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-sm text-sm focus:outline-none focus:border-gray-400 dark:focus:border-gray-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-color  text-gray-900 dark:text-gray-100 rounded-sm text-sm focus:outline-none focus:border-gray-400 dark:focus:border-gray-500"
           />
           <input
             type="password"
             placeholder="Password"
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-sm text-sm focus:outline-none focus:border-gray-400 dark:focus:border-gray-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-color  text-gray-900 dark:text-gray-100 rounded-sm text-sm focus:outline-none focus:border-gray-400 dark:focus:border-gray-500"
           />
           <button
             type="submit"

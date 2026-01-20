@@ -44,7 +44,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
     >
       <div
         ref={modalRef}
-        className="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4"
+        className="relative bg-color  rounded-lg shadow-xl max-w-md w-full mx-4"
       >
         {/* Close Button */}
         <button

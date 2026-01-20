@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
   title: "Instagram Chat",
@@ -11,13 +12,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // TODO: Replace with actual theme state (e.g., localStorage, user preferences)
-  const light_theme = true;
-
   return (
-    <html lang="en" className={light_theme ? "" : "dark"}>
-      <body className="antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="system">
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <div className="flex items-center justify-center bg-white dark:bg-gray-800 h-full">
+    <div className="flex items-center justify-center h-full bg-color">
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
           Hero Section
