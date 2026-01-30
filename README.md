@@ -1,65 +1,35 @@
-# Instagram API with Instagram Login 
-
-The API can be used to:
-
--   Content publishing. Get and publish their media. 
--   Messaging. Send and Receive messages with customers or people
-interested in their IG account.
-
-This API setup does not require a Facebook Page to be linked to the 
-Instagram account. 
-
-To ensure consistency between scope values and permission names, we are 
-introducing new scope values for the Instagram API with Instagram login.
-
-The new scope values are: 
-
--   *instagram_business_basic*
--   *instagram_business_content_publish*
--   *instagram_business_manage_messages*
--   *instagram_business_manage_comments*
-
-These will replace the existing *business_basic*, *business_content_publish*,
-*business_manage_comments* and *business_manage_messages* scope values.
-
 # Business Login for Instagram
 
-Business Login is a custom login flow that allows your app to ask for 
-permissions to access your app user's Instagram professional account
-data and to get an access token to use in your app's API requests. 
+Business Login is a custom login flow that allows your app to ask for permissions to access your app **user's Instagram professional account** data and to get **access token** to use in your **app's API requests**.
 
-To ensure consistency between scope values and permission names, we are 
-introducing new scope values for the Instagram API with Instagram login. 
-The new scope values are: 
+- _instagram_business_basic_
+- _instagram_business_content_publish_
+- _instagram_business_manage_messages_
+- _instagram_business_manage_comments_
 
--   *instagram_business_basic*
--   *instagram_business_content_publish*
--   *instagram_business_manage_messages*
--   *instagram_business_manage_comments*
+## How it works
 
-These will replace the existing:
--   *business_basic*
--   *business_content_publish*
--   *business_manage_comments*
--   *business_manage_messages*
+Your app user launches the _login flow_ on your appp or website by clicking _your embed URL link or button_.
 
-## How it works 
+This _embed URL_, that you set up in the **App Dashboard** with the permissions you are requesting from your app users, opens an **authorization window**.
 
-Your app user launches the login flow on your or website by clicking your
-embed URL link or button. 
+Your app user uses this window to _grant your app permissions_.
 
-This embed URL that you set up in the App Dashboard with the permissions 
-you are requesting from your app user, opens an authorization window.  
+When the user submits the _login flow_, Meta redirects your app user to your redirect URI and sends an **authorization code**.
 
-Your app user uses this window to grant your app permissions. 
+Your app can then exchange this **authorization code** for a short-lived ig user **access token**. An _ig-user-id_ for your _app-user_. And a _list of permissions_ the app user granted _your app_.
 
-When the user submits the login flow, Meta redirects your app user to your
-redirect URI and sends an authorization code. Your app can then exchange
-this authorization code for a short-lived Instagram User access token,
-an Instagram-scoped user ID for your app user, and a list of permissions 
-the app user granted your app. 
+- Your app can exchanged this **short-lived acccess token** for a **long-lived access token** tha is valid for a 60 days.
 
-Your app can exchanged this short-lived acccess token for a long-lived 
-Instagram user access token that is valid for 60 days. 
+Authorization Window > Auth Code > Short-lived Access Token > Long-lived Access Token.
 
+## Before you start
 
+Add the Instagram Product to your app and configure your **Business Login Settings** in the Meta App Dashboard.
+
+## Embed the business login URL
+
+You should have completed this step during Instagram app setup in the App Dashboard, but if not,
+
+1. Copy the **Embed URL** from the **Set up Business Login** in the App Dashboard.
+2. Paste the URL in an anchor tag or button on your app or website to launch the login flow.
