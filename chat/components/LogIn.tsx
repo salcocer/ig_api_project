@@ -1,15 +1,17 @@
 "use client";
+// const url = 'https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=856858887227986&redirect_uri=https://ig-api-project.onrender.com/login&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish%2Cinstagram_business_manage_insights';
 
 export default function LogIn() {
   const CLIENT_ID = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID;
-  const REDIRECT_URI = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || 'http://localhost:3000/callback';
-  const SCOPE = 'instagram_business_basic,instagram_business_manage_messages,instagram_business_manage_comments,instagram_business_content_publish,instagram_business_manage_insights';
+  const REDIRECT_URI =
+    process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI ||
+    "http://localhost:3000/callback";
+  const SCOPE =
+    "instagram_business_basic,instagram_business_manage_messages,instagram_business_manage_comments,instagram_business_content_publish,instagram_business_manage_insights";
 
   const authUrl = `https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
-    REDIRECT_URI
+    REDIRECT_URI,
   )}&response_type=code&scope=${encodeURIComponent(SCOPE)}`;
-
-  // const url = 'https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=856858887227986&redirect_uri=https://ig-api-project.onrender.com/login&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish%2Cinstagram_business_manage_insights';
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();

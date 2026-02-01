@@ -1,10 +1,12 @@
-'use client';
+"use client";
 import Content from "@/components/Content";
 import { fetchInstagramData } from "@/lib/api";
 import { useEffect, useState } from "react";
 
 export default function MainPage() {
-  const [userData, setUserData] = useState<{ id: string; name: string } | null>(null);
+  const [userData, setUserData] = useState<{ id: string; name: string } | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
