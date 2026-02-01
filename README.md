@@ -33,3 +33,37 @@ You should have completed this step during Instagram app setup in the App Dashbo
 
 1. Copy the **Embed URL** from the **Set up Business Login** in the App Dashboard.
 2. Paste the URL in an anchor tag or button on your app or website to launch the login flow.
+
+### API setup with Instagram Login
+
+App users log in with their Instagram credentials.
+
+To customize the Ig use case so that your app uses Business Login for Ig to log users in to your app, select **API setup with Ig login** in the left side menu.
+
+The app name, Instagram app ID, and Instagram App Secret are shown and can be used for test API calls.
+
+1. Click **Add al requirements permissions.** The _instagram_business_basic_ and _instagram_business_manage_messages_ premissions are required for this functionality and added by default.
+
+2. In the **Generate Access Tokens** section click **Add account**.
+
+3. Click **Continue** and log in to your ig account in the popup window.
+
+4. Click **save** and **got it** to return to the App Dashboard.
+
+5. In the **Configure webhooks** section, add your **Callback URL** and **Verify Token** to configure webhooks or use services that help you set up an endpoint.
+
+6. Click **Verify and save**. The verification must be successful to subscribe to webhooks fields.
+
+7. In the **Configure Webhooks** section, subscribe to available Instagram webhooks.
+
+8. Click **set up** in the **Set up Instagram business login**.
+
+9. Add your **Redirect URL** and click **save**.
+
+10. Click **Business Login Settings** and add your _Deauthorization callback url_ and _data deletion request URL_ and click _save_. You can also add additional redirects URIs.
+
+11. If you are ready to submit your app for review, click **Go to app review** in the **Complete App Review** section. This is only required if you are creating solutions for clients.
+
+### API integration helper
+
+The API Integration Helper allows you to send a test message using the Instagram API. Only available for apps that use Business Login for Instagram.
