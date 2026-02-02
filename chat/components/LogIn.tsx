@@ -1,6 +1,5 @@
 "use client";
 import { useParams } from "next/navigation";
-// const url = 'https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=856858887227986&redirect_uri=https://ig-api-project.onrender.com/login&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish%2Cinstagram_business_manage_insights';
 
 export default function LogIn() {
   const { code = null } = useParams<{ code: string }>();
