@@ -6,7 +6,7 @@ export default function LogIn() {
   const { code = null } = useParams<{ code: string }>();
   const CLIENT_ID = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID;
   const REDIRECT_URI = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || "";
-  const SCOPE = process.env.NEXT_PUBLIC_INSTAGRAM_SCOPE;
+  const SCOPE = process.env.NEXT_PUBLIC_INSTAGRAM_SCOPE || "";
 
   console.log({ code });
 
