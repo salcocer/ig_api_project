@@ -6,13 +6,13 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-1">
-        {/* Hero Section - 60% */}
-        <div className="w-[60%] min-w-[300px]">
+        {/* Hero Section*/}
+        <div className="w-[60%] min-w-75">
           <Hero />
         </div>
 
-        {/* Login Form - 40% */}
-        <div className="w-[40%] min-w-[300px]">
+        {/* Login Form*/}
+        <div className="w-[40%] min-w-75">
           <LogIn />
         </div>
       </div>

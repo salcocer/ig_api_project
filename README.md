@@ -67,3 +67,35 @@ The app name, Instagram app ID, and Instagram App Secret are shown and can be us
 ### API integration helper
 
 The API Integration Helper allows you to send a test message using the Instagram API. Only available for apps that use Business Login for Instagram.
+
+### OAuth token storage and management
+
+Short answer: treat the query string `code` as an authorization code only (never store it client-side).
+
+Exchange it on the server for a short-lived access token, and then exchange that for a long-lived access token.
+
+Persist the long token + expiry + profile in your server DB, and set an HttpOnly session cookie (session id) so the browser can be redirected to the dashboard without exposing tokens.
+
+1. Receive `code` server-side (on your redirect path).
+
+2. Server exchanges code => short-lived token. Response contains `access_token` and `expires_in`.
+
+3. Immediately exchange short-lived => long-lived. Response contains `access_token` (long) and `expires_in`.
+
+4. Fetch profile (/me?fields=id,name) with the long token to get user id, name.
+
+5. Persist server-side (in your lib/db.ts or real DB).
+   - store record: {id, name, access_token, expires_at}
+   - do NOT persist the auth `code`
+
+6. Create a session cookie for the browser:
+   - Option A: set an HttpOnly cookie with a session `id` or `user_id`. Then your APIs read that cookie and load the token from DB.
+
+7. Redirect user to `/dashboard`. The dashboard calls your server API. Which reads the cookie, looks up the user record in DB, and returns profile data - frontend never holds raw tokens.
+
+### When to refresh
+
+- Long-lived tokens typically last ~60 days. Refresh when `expires_at - now < threshold`
+- Refresh strategies:
+- If refresh fails or user revoked access, require re-auth (redirect to OAuth start).
+-
