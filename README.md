@@ -93,9 +93,36 @@ Persist the long token + expiry + profile in your server DB, and set an HttpOnly
 
 7. Redirect user to `/dashboard`. The dashboard calls your server API. Which reads the cookie, looks up the user record in DB, and returns profile data - frontend never holds raw tokens.
 
+Endpoints
+
+    https://www.instagram.com/oauth/authorize – To get an authorization code from your app user
+    https://api.instagram.com/oauth/access_token – To exchange an authorization code for a short-lived access token
+    https://graph.instagram.com/access_token – To exchange a valid short-lived access token for a long-lived access token
+    https://graph.instagram.com/refresh_access_token – To refresh a valid long-lived access token for another 60 days
+
+curl -X POST https://api.instagram.com/oauth/access_token \
+ -F 'client_id=990602627938098' \
+ -F 'client_secret=a1b2C3D4' \
+ -F 'grant_type=authorization_code' \
+ -F 'redirect_uri=https://my.m.redirect.net/' \
+ -F 'code=AQBx-hBsH3...'
+
+Never store the short-lived token in client-side storage. Exchange the code server-side immediately, persist the long-lived token + expiry in your server DB, and give the browser a server-controlled session (httpOnly cookie or session id).
+
+- Short token is sensitive and temporary - exchanging it immediately prevents leakage.
+- Long token (or session id) belongs on the server so front-end JS never sees tokens.
+- Cookies used by server APIs let your frontend call safe endpoints without exposing raw tokens.
+
 ### When to refresh
 
 - Long-lived tokens typically last ~60 days. Refresh when `expires_at - now < threshold`
 - Refresh strategies:
 - If refresh fails or user revoked access, require re-auth (redirect to OAuth start).
--
+
+```
+// const auth_short_token = `https://api.instagram.com/oauth/access_token?client_id=${CLIENT_ID}&client_secret=${process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(
+// REDIRECT_URI,
+// )}&code=${code}`;
+
+// console.log({ auth_short_token });
+```

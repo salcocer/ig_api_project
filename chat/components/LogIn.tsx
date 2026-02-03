@@ -1,21 +1,24 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function LogIn() {
-  const { code = null } = useParams<{ code: string }>();
+  const params = useSearchParams();
+  const code = params.get("code"); // string | null
+
   const CLIENT_ID = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID;
   const REDIRECT_URI = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || "";
   const SCOPE = process.env.NEXT_PUBLIC_INSTAGRAM_SCOPE || "";
 
   console.log({ code });
 
-  const authUrl = `https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
+  const auth_code = `https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
     REDIRECT_URI,
   )}&response_type=code&scope=${encodeURIComponent(SCOPE)}`;
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    window.location.href = authUrl;
+    window.location.href = auth_code;
   };
 
   return (
