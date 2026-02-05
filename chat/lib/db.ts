@@ -1,5 +1,5 @@
-import { promises as fs } from "fs";
 import { join } from "path";
+import { promises as fs } from "fs";
 
 const DATA_DIR = join(process.cwd(), "chat", "data");
 const USERS_FILE = join(DATA_DIR, "users.json");

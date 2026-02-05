@@ -12,7 +12,13 @@ export default function MainPage() {
   useEffect(() => {
     async function getUserData() {
       try {
-        const data = await fetchInstagramData("/me", { fields: "id,name" });
+        const data = await fetchInstagramData(
+          "/me",
+          {
+            fields: "id,name",
+          },
+          String(sessionStorage.getItem("ig_access_token")),
+        );
         setUserData(data);
       } catch (err: any) {
         setError(err.message);

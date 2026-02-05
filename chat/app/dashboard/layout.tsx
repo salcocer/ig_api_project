@@ -1,9 +1,11 @@
 "use client";
-import SideMenu from "@/components/SideMenu";
+
+import { useState } from "react";
+
+import Modal from "@/components/Modal";
 import Profile from "@/components/Profile";
 import Messages from "@/components/Messages";
-import { useState } from "react";
-import Modal from "@/components/ui/Modal";
+import SideMenu from "@/components/SideMenu";
 
 export default function MainLayout({
   children,
