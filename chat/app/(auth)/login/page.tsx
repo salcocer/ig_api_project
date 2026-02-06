@@ -1,6 +1,8 @@
+import React, { Suspense } from "react";
 import Hero from "@components/Hero";
 import LogIn from "@components/LogIn";
 import Footer from "@components/Footer";
+import Spinner from "@components/Spinner";
 
 export default function LoginPage() {
   return (
@@ -13,7 +15,9 @@ export default function LoginPage() {
 
         {/* Login Form*/}
         <div className="w-[40%] min-w-75">
-          <LogIn />
+          <Suspense fallback={<Spinner />}>
+            <LogIn />
+          </Suspense>
         </div>
       </div>
 
