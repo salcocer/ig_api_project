@@ -1,25 +1,26 @@
 'use client';
 import { useEffect } from 'react';
-import { fetchShortLivedToken } from '@/lib/api';
-import { redirect, useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
-async function getShortLivedToken(code: string) {
-    try {
-        const data = await fetchShortLivedToken(
-            process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || '',
-            process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET || '',
-            process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || '',
-            code
-        );
-        return data;
-    } catch (err: any) {
-        throw new Error(err.message || 'Failed to fetch short-lived token');
+async function postCodeToServer(code: string) {
+    const res = await fetch('/api/auth/exchange', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+    });
+
+    if (!res.ok) {
+        const txt = await res.text();
+        throw new Error(`Server exchange failed: ${txt}`);
     }
+
+    return res.json();
 }
 
 export default function LogIn() {
     const params = useSearchParams();
     const code = params?.get('code'); // string | null
+    const router = useRouter();
 
     const SCOPE = process.env.NEXT_PUBLIC_INSTAGRAM_SCOPE || '';
     const CLIENT_ID = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || '';
@@ -31,28 +32,24 @@ export default function LogIn() {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        redirect(auth_code);
+        // Navigate the browser to Instagram's OAuth page (external URL)
+        if (typeof window !== 'undefined') window.location.href = auth_code;
     };
 
     useEffect(() => {
-        if (code) {
-            getShortLivedToken(code)
-                .then(data => {
-                    if (typeof window !== 'undefined') {
-                        // Save access token in session storage
-                        try {
-                            sessionStorage.setItem('session', data.access_token); // Redirect to dashboard after successful login
-                            redirect('/dashboard');
-                        } catch (e) {
-                            console.log('Failed to save access token to sessionStorage', e);
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching short-lived token:', error);
-                });
-        }
-    }, [code]);
+        if (!code) return;
+
+        postCodeToServer(code)
+            .then((data: any) => {
+                try {
+                    sessionStorage.setItem('session', data.access_token);
+                    router.push('/dashboard');
+                } catch (e) {
+                    console.error('Failed to save access token or navigate', e);
+                }
+            })
+            .catch(error => console.error('Error exchanging code on server:', error));
+    }, [code, router]);
 
     return (
         <div className="flex items-center justify-center bg-color  h-full">
