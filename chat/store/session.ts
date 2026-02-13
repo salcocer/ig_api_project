@@ -25,7 +25,14 @@ export async function decrypt(session: string | undefined = '') {
 
 export async function createSession(userId: string) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    const session = await encrypt({ userId, expiresAt });
+    const session = await encrypt({
+        id: userId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        expires_at: expiresAt.toString(),
+        name: '',
+        access_token: '',
+    });
     if (typeof window !== 'undefined') {
         try {
             sessionStorage.setItem('session', session);
@@ -35,22 +42,25 @@ export async function createSession(userId: string) {
     }
 }
 
-export async function updateSession() {
-    if (typeof window === 'undefined') return null;
-    const session = sessionStorage.getItem('session') ?? undefined;
-    const payload = await decrypt(session);
+// export async function updateSession() {
+//     if (typeof window === 'undefined') return null;
+//     const session = sessionStorage.getItem('session') ?? undefined;
+//     const payload = await decrypt(session);
 
-    if (!session || !payload) return null;
+//     if (!session || !payload) return null;
 
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    const newSession = await encrypt({ userId: (payload as StoredUser).userId, expiresAt });
-    try {
-        sessionStorage.setItem('session', newSession);
-    } catch (e) {
-        console.log('Failed to update session in sessionStorage', e);
-    }
-    return newSession;
-}
+//     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+//     const newSession = await encrypt({
+//         id: (payload as StoredUser).id,
+//         expires_at: expiresAt.toString(),
+//     });
+//     try {
+//         sessionStorage.setItem('session', newSession);
+//     } catch (e) {
+//         console.log('Failed to update session in sessionStorage', e);
+//     }
+//     return newSession;
+// }
 
 export async function deleteSession() {
     if (typeof window === 'undefined') return;

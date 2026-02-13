@@ -1,7 +1,26 @@
 'use client';
-import { redirect } from 'next/navigation';
+import { useEffect } from 'react';
+import { fetchShortLivedToken } from '@/lib/api';
+import { redirect, useSearchParams } from 'next/navigation';
+
+async function getShortLivedToken(code: string) {
+    try {
+        const data = await fetchShortLivedToken(
+            process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || '',
+            process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET || '',
+            process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || '',
+            code
+        );
+        return data;
+    } catch (err: any) {
+        throw new Error(err.message || 'Failed to fetch short-lived token');
+    }
+}
 
 export default function LogIn() {
+    const params = useSearchParams();
+    const code = params?.get('code'); // string | null
+
     const SCOPE = process.env.NEXT_PUBLIC_INSTAGRAM_SCOPE || '';
     const CLIENT_ID = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || '';
     const REDIRECT_URI = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || '';
@@ -14,6 +33,26 @@ export default function LogIn() {
         e.preventDefault();
         redirect(auth_code);
     };
+
+    useEffect(() => {
+        if (code) {
+            getShortLivedToken(code)
+                .then(data => {
+                    if (typeof window !== 'undefined') {
+                        // Save access token in session storage
+                        try {
+                            sessionStorage.setItem('session', data.access_token); // Redirect to dashboard after successful login
+                            redirect('/dashboard');
+                        } catch (e) {
+                            console.log('Failed to save access token to sessionStorage', e);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching short-lived token:', error);
+                });
+        }
+    }, [code]);
 
     return (
         <div className="flex items-center justify-center bg-color  h-full">
