@@ -120,9 +120,9 @@ Never store the short-lived token in client-side storage. Exchange the code serv
 - If refresh fails or user revoked access, require re-auth (redirect to OAuth start).
 
 ```
-// const auth_short_token = `https://api.instagram.com/oauth/access_token?client_id=${CLIENT_ID}&client_secret=${process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(
-// REDIRECT_URI,
-// )}&code=${code}`;
+const auth_short_token = `https://api.instagram.com/oauth/access_token?client_id=${CLIENT_ID}&client_secret=${process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(
+ REDIRECT_URI,
+ )}&code=${code}`;
 
 // console.log({ auth_short_token });
 ```

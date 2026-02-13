@@ -1,38 +1,10 @@
 'use client';
-import Spinner from './Spinner';
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-
-export function AuthSessionToken({ code }: { code: string | null }) {
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (!code) return;
-        (async () => {
-            try {
-                // Exchange code for access token
-                // Save token in sessionStorage for now and redirect
-
-                window.location.href = '/dashboard';
-            } catch (e) {
-                console.error(e);
-                setLoading(false);
-            }
-        })();
-    }, [code]);
-
-    if (!code) return null;
-    if (loading) return <Spinner />;
-    return null;
-}
+import { redirect } from 'next/navigation';
 
 export default function LogIn() {
-    const params = useSearchParams();
-    const code = params?.get('code'); // string | null
-
-    const CLIENT_ID = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID;
-    const REDIRECT_URI = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || '';
     const SCOPE = process.env.NEXT_PUBLIC_INSTAGRAM_SCOPE || '';
+    const CLIENT_ID = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || '';
+    const REDIRECT_URI = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || '';
 
     const auth_code = `https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
         REDIRECT_URI
@@ -40,7 +12,7 @@ export default function LogIn() {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        window.location.href = auth_code;
+        redirect(auth_code);
     };
 
     return (
@@ -68,30 +40,10 @@ export default function LogIn() {
                     <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
                 </div>
 
-                {/* <button className="w-full flex items-center justify-center gap-2 text-blue-900 dark:text-blue-400 font-semibold text-sm">
-          <span className="text-xl">f</span>
-          Log in with Facebook
-        </button> */}
-
-                {/* <div className="text-center mt-4">
-          <a href="#" className="text-xs text-blue-900 dark:text-blue-400">
-            Forgot password?
-          </a>
-        </div> */}
-
                 <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4">
                     You can also report content you believe is unlawful in your country without
                     logging in.
                 </p>
-
-                {/* <div className="mt-8 pt-5 border-t border-gray-300 dark:border-gray-600 text-center">
-          <p className="text-sm text-gray-900 dark:text-gray-100">
-            Don't have an account?{" "}
-            <a href="#" className="text-blue-500 font-semibold">
-              Sign up
-            </a>
-          </p>
-        </div> */}
             </div>
         </div>
     );

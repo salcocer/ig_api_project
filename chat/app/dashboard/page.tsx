@@ -1,45 +1,50 @@
-"use client";
-import Content from "@/components/Content";
-import { fetchInstagramData } from "@/lib/api";
-import { useEffect, useState } from "react";
+'use client';
+import Content from '@/components/Content';
+import { redirect } from 'next/navigation';
+import { getSessionToken } from '@store/session';
+import { fetchInstagramData } from '@/lib/api';
+import { useEffect, useState } from 'react';
 
-export default function MainPage() {
-  const [userData, setUserData] = useState<{ id: string; name: string } | null>(
-    null,
-  );
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function getUserData() {
-      try {
+async function getUserData() {
+    try {
         const data = await fetchInstagramData(
-          "/me",
-          {
-            fields: "id,name",
-          },
-          String(sessionStorage.getItem("ig_access_token")),
+            '/me',
+            {
+                fields: 'id,name',
+            },
+            String(getSessionToken())
         );
-        setUserData(data);
-      } catch (err: any) {
-        setError(err.message);
-      }
+        return data;
+    } catch (err: any) {
+        throw new Error(err.message || 'Failed to fetch user data');
     }
+}
 
-    getUserData();
-  }, []);
+export default function DashboardContent() {
+    const [userData, setUserData] = useState<{ id: string; name: string } | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const session = getSessionToken();
 
-  return (
-    <div>
-      {error && <p>Error: {error}</p>}
-      {userData ? (
+    if (!session) redirect('/login');
+
+    useEffect(() => {
+        getUserData()
+            .then(data => setUserData(data))
+            .catch(err => setError(err.message));
+    }, []);
+
+    return (
         <div>
-          <h1>Welcome, {userData.name}!</h1>
-          <p>Your ID: {userData.id}</p>
+            {error && <p>Error: {error}</p>}
+            {userData ? (
+                <div>
+                    <h1>Welcome, {userData.name}!</h1>
+                    <p>Your ID: {userData.id}</p>
+                </div>
+            ) : (
+                <p>Loading...</p>
+            )}
+            <Content />
         </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-      <Content />
-    </div>
-  );
+    );
 }
