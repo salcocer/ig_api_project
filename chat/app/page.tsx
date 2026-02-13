@@ -28,11 +28,10 @@ export default function Home() {
         if (code) {
             getShortLivedToken(code)
                 .then(data => {
-                    // Save access token in session storage
                     if (typeof window !== 'undefined') {
+                        // Save access token in session storage
                         try {
-                            sessionStorage.setItem('session', data.access_token);
-                            // Redirect to dashboard after successful login
+                            sessionStorage.setItem('session', data.access_token); // Redirect to dashboard after successful login
                             redirect('/dashboard');
                         } catch (e) {
                             console.log('Failed to save access token to sessionStorage', e);
