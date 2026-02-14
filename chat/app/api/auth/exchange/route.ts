@@ -9,12 +9,15 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Missing code' }, { status: 400 });
         }
 
-        const client_id = process.env.INSTAGRAM_APP_ID || process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || '';
-        const client_secret = process.env.INSTAGRAM_APP_SECRET || process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET || '';
-        const redirect_uri = process.env.INSTAGRAM_REDIRECT_URI || process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || '';
+        const client_id = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || '';
+        const client_secret = process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET || '';
+        const redirect_uri = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || '';
 
         if (!client_id || !client_secret || !redirect_uri) {
-            return NextResponse.json({ error: 'Missing Instagram env vars on server' }, { status: 500 });
+            return NextResponse.json(
+                { error: 'Missing Instagram env vars on server' },
+                { status: 500 }
+            );
         }
 
         const data = await fetchShortLivedToken(client_id, client_secret, redirect_uri, code);

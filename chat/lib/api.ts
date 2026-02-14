@@ -6,15 +6,8 @@ export async function fetchShortLivedToken(
     redirect_uri: string,
     code: string
 ) {
-    // if (typeof window !== 'undefined') {
-    //     throw new Error(
-    //         'fetchShortLivedToken must be called from the server (no CORS / secret in browser)'
-    //     );
-    // }
-
     const url = 'https://api.instagram.com/oauth/access_token';
 
-    // Do NOT double-encode `redirect_uri` — URLSearchParams will handle form encoding.
     const body = new URLSearchParams({
         client_id,
         client_secret,
@@ -30,22 +23,12 @@ export async function fetchShortLivedToken(
         },
         body: body.toString(),
     });
-    console.log({ response });
-    let data: any;
-    try {
-        data = await response.json();
-    } catch (e) {
-        const text = await response.text();
-        throw new Error(`Instagram Auth: invalid JSON response: ${text}`);
-    }
 
     if (!response.ok) {
-        const message = data?.error_message || data?.error?.message || JSON.stringify(data);
-        throw new Error(`Instagram Auth error: ${message}`);
+        throw new Error(`Instagram Auth error: ${response.statusText}`);
     }
 
-    console.log('fetchShortLivedToken response:', data);
-    return data;
+    return response.json();
 }
 
 export async function fetchInstagramData(

@@ -32,13 +32,11 @@ export default function LogIn() {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        // Navigate the browser to Instagram's OAuth page (external URL)
-        if (typeof window !== 'undefined') window.location.href = auth_code;
+        if (typeof window !== 'undefined') window.location.href = auth_code; // Navigate the browser to Instagram's OAuth page (external URL)
     };
 
     useEffect(() => {
         if (!code) return;
-
         postCodeToServer(code)
             .then((data: any) => {
                 try {
