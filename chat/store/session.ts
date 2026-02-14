@@ -87,8 +87,8 @@ export async function getSession(): Promise<SessionUser | null> {
     if (typeof window === 'undefined') return null;
     const session = sessionStorage.getItem('session') ?? undefined;
     if (!session) return null;
-    const payload = await decrypt(session);
-    return (payload as SessionUser) ?? null;
+    // const payload = await decrypt(session);
+    return (JSON.parse(session) as SessionUser) ?? null;
 }
 
 export async function getSessionToken(): Promise<string | null> {
