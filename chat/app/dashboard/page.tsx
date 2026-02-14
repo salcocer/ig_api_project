@@ -1,42 +1,44 @@
 'use client';
 import Content from '@/components/Content';
 import { useRouter } from 'next/navigation';
-import { getSessionToken } from '@store/session';
-import { fetchInstagramData } from '@/lib/api';
 import { useEffect, useState } from 'react';
-
-async function getUserData(sessionToken: string) {
-    try {
-        const data = await fetchInstagramData(
-            '/me',
-            {
-                fields: 'id,name',
-            },
-            sessionToken
-        );
-        return data;
-    } catch (err: any) {
-        throw new Error(err.message || 'Failed to fetch user data');
-    }
-}
 
 export default function DashboardContent() {
     const router = useRouter();
     const [userData, setUserData] = useState<{ id: string; name: string } | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        getSessionToken()
-            .then(token => {
-                if (!token) router.push('/');
-                else {
-                    getUserData(token)
-                        .then(data => setUserData(data))
-                        .catch(err => setError(err.message));
+        let mounted = true;
+
+        fetch('/api/instagram/me')
+            .then(async res => {
+                if (!mounted) return;
+                if (res.status === 401) {
+                    router.push('/login');
+                    return;
                 }
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({ error: 'Failed to fetch' }));
+                    setError(err?.error || 'Failed to fetch user data');
+                    setLoading(false);
+                    return;
+                }
+                const data = await res.json();
+                setUserData(data);
+                setLoading(false);
             })
-            .catch(() => router.push('/'));
+            .catch(() => {
+                if (mounted) router.push('/login');
+            });
+
+        return () => {
+            mounted = false;
+        };
     }, [router]);
+
+    if (loading) return <p>Loading...</p>;
 
     return (
         <div>
@@ -47,7 +49,7 @@ export default function DashboardContent() {
                     <p>Your ID: {userData.id}</p>
                 </div>
             ) : (
-                <p>Loading...</p>
+                <p>Not signed in</p>
             )}
             <Content />
         </div>

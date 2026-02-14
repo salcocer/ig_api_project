@@ -31,6 +31,26 @@ export async function fetchShortLivedToken(
     return response.json();
 }
 
+export async function fetchLongLivedToken(client_secret: string, short_lived_token: string) {
+    const url = new URL('https://graph.instagram.com/access_token');
+    url.search = new URLSearchParams({
+        grant_type: 'ig_exchange_token',
+        client_secret,
+        access_token: short_lived_token,
+    }).toString();
+
+    const response = await fetch(url.toString(), {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        const err = await response.text();
+        throw new Error(`Long-lived token exchange failed: ${err}`);
+    }
+
+    return response.json();
+}
+
 export async function fetchInstagramData(
     endpoint: string,
     params: Record<string, string> = {},
@@ -42,7 +62,7 @@ export async function fetchInstagramData(
         access_token,
     }).toString();
 
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
         method: 'GET',
     });
 
