@@ -1,18 +1,18 @@
 'use client';
 import Content from '@/components/Content';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { getSessionToken } from '@store/session';
 import { fetchInstagramData } from '@/lib/api';
 import { useEffect, useState } from 'react';
 
-async function getUserData() {
+async function getUserData(sessionToken: string) {
     try {
         const data = await fetchInstagramData(
             '/me',
             {
                 fields: 'id,name',
             },
-            String(getSessionToken())
+            sessionToken
         );
         return data;
     } catch (err: any) {
@@ -21,17 +21,22 @@ async function getUserData() {
 }
 
 export default function DashboardContent() {
+    const router = useRouter();
     const [userData, setUserData] = useState<{ id: string; name: string } | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const session = getSessionToken();
-
-    if (!session) redirect('/login');
 
     useEffect(() => {
-        getUserData()
-            .then(data => setUserData(data))
-            .catch(err => setError(err.message));
-    }, []);
+        getSessionToken()
+            .then(token => {
+                if (!token) router.push('/');
+                else {
+                    getUserData(token)
+                        .then(data => setUserData(data))
+                        .catch(err => setError(err.message));
+                }
+            })
+            .catch(() => router.push('/'));
+    }, [router]);
 
     return (
         <div>

@@ -9,19 +9,12 @@ export default function Home() {
     return (
         <div className="flex flex-col min-h-screen">
             <div className="flex flex-1">
-                {/* Hero Section*/}
-                <div className="w-[60%] min-w-75">
-                    <Hero />
-                </div>
+                <Hero />
 
-                {/* Login Form*/}
-                <div className="w-[30%] min-w-75">
-                    <Suspense fallback={<Spinner />}>
-                        <LogIn />
-                    </Suspense>
-                </div>
+                <Suspense fallback={<Spinner />}>
+                    <LogIn />
+                </Suspense>
             </div>
-
             <Footer />
         </div>
     );

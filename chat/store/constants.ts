@@ -12,3 +12,11 @@ export type StoredUser = {
     createdAt: string;
     updatedAt: string;
 };
+
+export type SessionUser = {
+    user_id: string;
+    access_token: string;
+    permissions: string[];
+    created_at: string;
+    expires_at: string;
+};

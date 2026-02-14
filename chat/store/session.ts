@@ -1,10 +1,10 @@
-import { StoredUser } from './constants';
+import { SessionUser } from './constants';
 import { SignJWT, jwtVerify } from 'jose';
 
-const secretKey = process.env.SESSION_SECRET || process.env.NEXT_PUBLIC_SESSION_SECRET;
+const secretKey = process.env.NEXT_PUBLIC_SESSION_SECRET || 'default_secret_key';
 const encodedKey = new TextEncoder().encode(secretKey || '');
 
-export async function encrypt(payload: StoredUser) {
+export async function encrypt(payload: SessionUser) {
     return new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
@@ -23,19 +23,31 @@ export async function decrypt(session: string | undefined = '') {
     }
 }
 
-export async function createSession(userId: string) {
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    const session = await encrypt({
-        id: userId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        expires_at: expiresAt.toString(),
-        name: '',
-        access_token: '',
-    });
+export async function createSession(data: SessionUser) {
+    const { user_id, access_token, permissions } = data;
+    console.log({ data });
+    const created_at = new Date().toISOString();
+    const expires_at = new Date(new Date(created_at).getTime() + 60 * 60 * 1000).toISOString();
+
+    const session: SessionUser = {
+        user_id,
+        access_token,
+        permissions,
+        created_at,
+        expires_at,
+    };
+
+    // const session = await encrypt({
+    //     user_id,
+    //     access_token,
+    //     permissions,
+    //     created_at,
+    //     expires_at,
+    // });
+
     if (typeof window !== 'undefined') {
         try {
-            sessionStorage.setItem('session', session);
+            sessionStorage.setItem('session', JSON.stringify(session));
         } catch (e) {
             console.log('Failed to save session to sessionStorage', e);
         }
@@ -51,7 +63,7 @@ export async function createSession(userId: string) {
 
 //     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 //     const newSession = await encrypt({
-//         id: (payload as StoredUser).id,
+//         id: (payload as SessionUser).id,
 //         expires_at: expiresAt.toString(),
 //     });
 //     try {
@@ -71,15 +83,15 @@ export async function deleteSession() {
     }
 }
 
-export async function getSession(): Promise<StoredUser | null> {
+export async function getSession(): Promise<SessionUser | null> {
     if (typeof window === 'undefined') return null;
     const session = sessionStorage.getItem('session') ?? undefined;
     if (!session) return null;
     const payload = await decrypt(session);
-    return (payload as StoredUser) ?? null;
+    return (payload as SessionUser) ?? null;
 }
 
 export async function getSessionToken(): Promise<string | null> {
-    const session: StoredUser | null = await getSession();
+    const session: SessionUser | null = await getSession();
     return session?.access_token || null;
 }

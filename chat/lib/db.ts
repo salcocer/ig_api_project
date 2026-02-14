@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 const DATA_DIR = join(process.cwd(), 'chat', 'data');
 const USERS_FILE = join(DATA_DIR, 'users.json');
 
-export type StoredUser = {
+export type SessionUser = {
     id: string;
     name: string;
     access_token: string;
@@ -22,22 +22,22 @@ async function ensureDataDir() {
     }
 }
 
-async function readAll(): Promise<Record<string, StoredUser>> {
+async function readAll(): Promise<Record<string, SessionUser>> {
     await ensureDataDir();
     const raw = await fs.readFile(USERS_FILE, 'utf8');
     try {
-        return JSON.parse(raw) as Record<string, StoredUser>;
+        return JSON.parse(raw) as Record<string, SessionUser>;
     } catch (e) {
         return {};
     }
 }
 
-async function writeAll(data: Record<string, StoredUser>) {
+async function writeAll(data: Record<string, SessionUser>) {
     await ensureDataDir();
     await fs.writeFile(USERS_FILE, JSON.stringify(data, null, 2), 'utf8');
 }
 
-export async function saveUser(user: StoredUser) {
+export async function saveUser(user: SessionUser) {
     const all = await readAll();
     user.updatedAt = new Date().toISOString();
     if (!user.createdAt) user.createdAt = new Date().toISOString();
@@ -45,7 +45,7 @@ export async function saveUser(user: StoredUser) {
     await writeAll(all);
 }
 
-export async function getUser(id: string): Promise<StoredUser | null> {
+export async function getUser(id: string): Promise<SessionUser | null> {
     const all = await readAll();
     return all[id] || null;
 }
@@ -58,7 +58,7 @@ export async function deleteUser(id: string) {
     }
 }
 
-export async function listUsers(): Promise<StoredUser[]> {
+export async function listUsers(): Promise<SessionUser[]> {
     const all = await readAll();
     return Object.values(all);
 }
@@ -75,7 +75,7 @@ export async function upsertUserToken(
         ? new Date(now.getTime() + expiresInSeconds * 1000).toISOString()
         : undefined;
 
-    const user: StoredUser = {
+    const user: SessionUser = {
         id,
         name: name ?? existing?.name ?? '',
         access_token: token,
