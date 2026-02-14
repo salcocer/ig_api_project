@@ -48,7 +48,7 @@ export async function POST(req: Request) {
                 ? Math.floor(longData.expires_in)
                 : 60 * 60 * 24 * 60; // fallback 60 days
         const res = NextResponse.json({ success: true, expires_in: longData.expires_in || maxAge });
-        res.cookies.set('ig_access_token', longData.access_token, {
+        res.cookies.set('access_token', longData.access_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             path: '/',
