@@ -46,7 +46,7 @@ export default function LogIn() {
         postCodeToServer(code)
             .then(data => {
                 try {
-                    createSession(data);
+                    createSession(data?.data);
                     router.push('/dashboard');
                 } catch (e) {
                     console.error('Failed to save access token or navigate', e);
