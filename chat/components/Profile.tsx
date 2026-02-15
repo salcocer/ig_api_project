@@ -63,18 +63,18 @@ export default function Profile() {
                     )}
 
                     <div className="ml-2">
-                        <span className=" ml-2 font-medium">{userData?.username}</span>
+                        <span className=" ml-2 font-bold">{userData?.username}</span>
                         <div>
-                            <span className="ml-2 text-gray-500">{userData?.followers_count}</span>
-                            <span className="ml-2 text-gray-500">{userData?.follows_count}</span>
-                            <span className="ml-2 text-gray-500">{userData?.media_count}</span>
+                            <span className="ml-2 ">{userData?.followers_count}</span>
+                            <span className="ml-2 ">{userData?.follows_count}</span>
+                            <span className="ml-2 ">{userData?.media_count}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Stories - 180px height */}
-            <Stories />
+            {/* <Stories /> */}
         </div>
     );
 }
