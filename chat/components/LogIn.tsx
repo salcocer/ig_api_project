@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Spinner from './Spinner';
 import { createSession } from '@/store/session';
-import type { SessionUser } from '@/store/constants';
 
 async function postCodeToServer(code: string) {
     const res = await fetch('/api/auth/exchange', {
