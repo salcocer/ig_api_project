@@ -15,7 +15,13 @@ export async function GET(req: Request) {
             access_token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || '';
         }
 
-        const data = await fetchInstagramData('/me', { fields: 'name' }, access_token);
+        const data = await fetchInstagramData(
+            '/me',
+            {
+                fields: 'name, username, profile_picture_url, followers_count, follows_count, media_count',
+            },
+            access_token
+        );
 
         return NextResponse.json(data);
     } catch (err: any) {

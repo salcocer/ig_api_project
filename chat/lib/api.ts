@@ -56,7 +56,8 @@ export async function fetchInstagramData(
     params: Record<string, string> = {},
     access_token: string
 ) {
-    const url = new URL(`https://graph.facebook.com/v24.0${endpoint}`);
+    // https://graph.instagram.com/v24.0/me
+    const url = new URL(`https://graph.instagram.com/${endpoint}`);
     url.search = new URLSearchParams({
         ...params,
         access_token,
