@@ -9,12 +9,9 @@ async function postCodeToServer(code: string) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code }),
+    }).catch(error => {
+        throw new Error(`${error.message}`);
     });
-
-    if (!res.ok) {
-        const txt = await res.text();
-        throw new Error(`Server exchange failed: ${txt}`);
-    }
 
     return res.json();
 }
