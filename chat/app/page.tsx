@@ -14,8 +14,6 @@ export default function Home() {
         const expires_at = sessionStorage.getItem('session')
             ? JSON.parse(sessionStorage.getItem('session') || '{}').expires_at
             : null;
-        console.log({ user_id, expires_at }); // Debug log to check values before redirecting
-
         if (user_id && expires_at && new Date(expires_at) > new Date()) redirect('/dashboard');
     }, []);
 
