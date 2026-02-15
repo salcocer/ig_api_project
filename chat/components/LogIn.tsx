@@ -21,9 +21,10 @@ async function postCodeToServer(code: string) {
 }
 
 export default function LogIn() {
-    const params = useSearchParams();
-    const code = params?.get('code'); // string | null
     const router = useRouter();
+    const params = useSearchParams();
+    const code = params?.get('code');
+
     const [error, setError] = useState(true);
     const [loading, setLoading] = useState(false);
 
@@ -44,11 +45,10 @@ export default function LogIn() {
         if (!code) return;
         setLoading(true);
         postCodeToServer(code)
-            .then((data: SessionUser) => {
+            .then(data => {
                 try {
                     createSession(data);
                     router.push('/dashboard');
-                    // sessionStorage.setItem('session', data.access_token);
                 } catch (e) {
                     console.error('Failed to save access token or navigate', e);
                 } finally {

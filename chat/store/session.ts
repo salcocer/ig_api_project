@@ -24,30 +24,11 @@ export async function decrypt(session: string | undefined = '') {
 }
 
 export async function createSession(data: SessionUser) {
-    const { user_id, access_token, permissions } = data;
-    console.log({ data });
-    const created_at = new Date().toISOString();
-    const expires_at = new Date(new Date(created_at).getTime() + 60 * 60 * 1000).toISOString();
-
-    const session: SessionUser = {
-        user_id,
-        access_token,
-        permissions,
-        created_at,
-        expires_at,
-    };
-
-    // const session = await encrypt({
-    //     user_id,
-    //     access_token,
-    //     permissions,
-    //     created_at,
-    //     expires_at,
-    // });
+    // const session = await encrypt({});
 
     if (typeof window !== 'undefined') {
         try {
-            sessionStorage.setItem('session', JSON.stringify(session));
+            sessionStorage.setItem('session', JSON.stringify(data));
         } catch (e) {
             console.log('Failed to save session to sessionStorage', e);
         }

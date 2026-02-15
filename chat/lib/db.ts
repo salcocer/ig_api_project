@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 const DATA_DIR = join(process.cwd(), 'chat', 'data');
 const USERS_FILE = join(DATA_DIR, 'users.json');
 
-export type SessionUser = {
+type SessionUser = {
     id: string;
     name: string;
     access_token: string;

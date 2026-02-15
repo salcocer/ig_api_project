@@ -16,12 +16,12 @@ export default function DashboardContent() {
             .then(async res => {
                 if (!mounted) return;
                 if (res.status === 401) {
-                    router.push('/login');
+                    router.push('/');
                     return;
                 }
                 if (!res.ok) {
-                    const err = await res.json().catch(() => ({ error: 'Failed to fetch' }));
-                    setError(err?.error || 'Failed to fetch user data');
+                    // const err = await res.json().catch(() => ({ error: 'Failed to fetch' }));
+                    setError(res?.statusText || 'Failed to fetch user data');
                     setLoading(false);
                     return;
                 }
@@ -30,7 +30,7 @@ export default function DashboardContent() {
                 setLoading(false);
             })
             .catch(() => {
-                if (mounted) router.push('/login');
+                if (mounted) router.push('/');
             });
 
         return () => {

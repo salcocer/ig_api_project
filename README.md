@@ -124,5 +124,4 @@ const auth_short_token = `https://api.instagram.com/oauth/access_token?client_id
  REDIRECT_URI,
  )}&code=${code}`;
 
-// console.log({ auth_short_token });
 ```
