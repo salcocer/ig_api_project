@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { fetchInstagramData } from '@/lib/api';
 
-export async function GET(req: Request) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
         const cookieStore = cookies();
         let access_token = (await cookieStore)?.get('access_token')?.value || '';
@@ -15,15 +15,15 @@ export async function GET(req: Request) {
             access_token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || '';
         }
 
+        const mediaId = params?.id;
+
         const data = await fetchInstagramData(
-            '/me',
+            `${mediaId}`,
             {
-                fields: 'name, username, profile_picture_url, followers_count, follows_count, media_count',
+                fields: 'id,media_type,media_url,owner,timestamp',
             },
             access_token
-        ).catch(error => {
-            throw new Error(error?.message);
-        });
+        );
 
         return NextResponse.json(data);
     } catch (err: any) {

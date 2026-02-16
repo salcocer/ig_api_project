@@ -16,9 +16,9 @@ export async function GET(req: Request) {
         }
 
         const data = await fetchInstagramData(
-            '/me',
+            'me',
             {
-                fields: 'name, username, profile_picture_url, followers_count, follows_count, media_count',
+                fields: 'media',
             },
             access_token
         ).catch(error => {

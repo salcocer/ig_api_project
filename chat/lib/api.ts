@@ -56,8 +56,29 @@ export async function fetchInstagramData(
     params: Record<string, string> = {},
     access_token: string
 ) {
-    // https://graph.instagram.com/v24.0/me
     const url = new URL(`https://graph.instagram.com/${endpoint}`);
+    url.search = new URLSearchParams({
+        ...params,
+        access_token,
+    }).toString();
+
+    const response = await fetch(url, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(`Instagram API error: ${error.error.message}`);
+    }
+
+    return response.json();
+}
+
+export async function fetchInstagramMedia(
+    params: Record<string, string> = {},
+    access_token: string
+) {
+    const url = new URL(`https://graph.instagram.com/`);
     url.search = new URLSearchParams({
         ...params,
         access_token,

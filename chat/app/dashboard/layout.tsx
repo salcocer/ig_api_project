@@ -1,14 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Modal from '@/components/Modal';
 import Profile from '@/components/Profile';
 import Messages from '@/components/Messages';
 import SideMenu from '@/components/SideMenu';
+import { useUserMedia } from '@/store/useUserMedia';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const { userMedia, setUserMedia } = useUserMedia((state: any) => state);
+
+    useEffect(() => {
+        fetch('/api/instagram/media').then(async res => {
+            if (res.status !== 200) return;
+            if (!res.ok) {
+                setError(res?.statusText || 'Failed to fetch user data');
+                setLoading(false);
+                return;
+            }
+            const data = await res.json();
+            setUserMedia(data);
+            setLoading(false);
+        });
+    }, [setUserMedia]);
 
     return (
         <div className="flex h-screen overflow-hidden">
