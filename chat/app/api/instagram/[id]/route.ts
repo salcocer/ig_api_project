@@ -4,7 +4,7 @@ import { fetchInstagramData } from '@/lib/api';
 
 export async function GET(
     req: NextRequest,
-    context: { params: { id: string } | Promise<{ id: string }>; }
+    context: { params: { id: string } | Promise<{ id: string }> }
 ) {
     try {
         const cookieStore = cookies();
