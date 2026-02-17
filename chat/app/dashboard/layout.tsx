@@ -36,7 +36,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             {/* Middle Section - Profile, Stories, Messages */}
-            <div className="w-[440px] min-w-[360px] border-r border-gray-300 flex flex-col">
+            <div className="w-[400px] min-w-[360px] border-r border-gray-300 flex flex-col">
                 <Profile />
                 <Messages />
             </div>

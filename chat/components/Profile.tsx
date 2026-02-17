@@ -33,22 +33,22 @@ export default function Profile() {
     if (loading) return <Spinner />;
 
     return (
-        <div className="border-b border-gray-300">
+        <div className="border-b border-gray-300 ">
             {/* Profile Header */}
-            <div className="h-[120px] border border-gray-400 p-4">
-                <div className="flex items-center">
+            <div className="h-[120px] w-auto border border-gray-400 justify-center items-center flex ">
+                <div className="flex items-center w-full p-4">
                     {userData?.profile_picture_url && (
                         <Image
                             src={userData.profile_picture_url}
                             alt={userData.name || 'Profile Picture'}
                             width={70}
                             height={70}
-                            className="w-15 h-15 rounded-full hover:cursor-pointer"
+                            className="w-16 h-16 rounded-full hover:cursor-pointer"
                             onClick={() => console.log('onClickImage')}
                         />
                     )}
 
-                    <div className="ml-2">
+                    <div className="ml-3">
                         <a
                             onClick={() => console.log('onClickName')}
                             className=" ml-2 font-bold hover:cursor-pointer">
@@ -63,7 +63,6 @@ export default function Profile() {
                 </div>
             </div>
 
-            {/* Stories - 180px height */}
             {/* <Stories /> */}
         </div>
     );
