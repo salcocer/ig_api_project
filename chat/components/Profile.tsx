@@ -47,13 +47,12 @@ export default function Profile() {
                             className="w-16 h-16 rounded-full hover:cursor-pointer"
                         />
                     )}
-
                     <div className="ml-3">
                         <a className=" ml-2 font-bold hover:cursor-pointer">{userData?.username}</a>
-                        <div>
-                            <span className="ml-2 ">{userData?.followers_count}</span>
-                            <span className="ml-2 ">{userData?.follows_count}</span>
-                            <span className="ml-2 ">{userData?.media_count}</span>
+                        <div className="flex">
+                            <span className="ml-2 flex items-center">{`${userData?.followers_count}`}</span>
+                            <span className="ml-2 flex items-center">{`${userData?.follows_count}`}</span>
+                            <span className="ml-2 flex items-center ">{`${userData?.media_count}`}</span>
                         </div>
                     </div>
                 </div>

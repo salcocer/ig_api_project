@@ -11,6 +11,7 @@ export default async function Home() {
     const access_token = (await cookieStore)?.get('access_token')?.value || '';
     const expires_at = (await cookieStore)?.get('expires_at')?.value || '';
 
+    console.log({ access_token, expires_at });
     if (access_token && expires_at && new Date(expires_at) > new Date()) {
         redirect('/dashboard');
     }
