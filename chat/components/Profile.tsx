@@ -1,39 +1,40 @@
 'use client';
-import Stories from './Stories';
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Spinner from './Spinner';
-import { useUserData } from '@/store/userData';
+import { useEffect, useState } from 'react';
+
+type UserData = {
+    name: string;
+    username: string;
+    profile_picture_url: string;
+    followers_count: number;
+    follows_count: number;
+    media_count: number;
+};
 
 export default function Profile() {
-    const router = useRouter();
-    const { userData, setUserData } = useUserData((state: any) => state);
-
-    const [error, setError] = useState<string | null>(null);
+    const [userData, setUserData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('/api/instagram/me').then(async res => {
-            if (res.status !== 200) {
-                router.push('/');
-                return;
-            }
-            if (!res.ok) {
-                setError(res?.statusText || 'Failed to fetch user data');
+        fetch('/api/instagram/me')
+            .then(res => res.json())
+            .then(data => {
+                setUserData(data);
                 setLoading(false);
-                return;
-            }
-            const data = await res.json();
-            setUserData(data);
-            setLoading(false);
-        });
-    }, [router, setUserData]);
-
-    if (loading) return <Spinner />;
+            })
+            .catch(error => {
+                setLoading(false);
+            });
+    }, []);
 
     return (
         <div className="border-b border-gray-300 ">
+            {loading && (
+                <div className="flex items-center justify-center h-32">
+                    <Spinner />
+                </div>
+            )}
             {/* Profile Header */}
             <div className="h-[120px] w-auto border border-gray-400 justify-center items-center flex ">
                 <div className="flex items-center w-full p-4">
@@ -44,16 +45,11 @@ export default function Profile() {
                             width={70}
                             height={70}
                             className="w-16 h-16 rounded-full hover:cursor-pointer"
-                            onClick={() => console.log('onClickImage')}
                         />
                     )}
 
                     <div className="ml-3">
-                        <a
-                            onClick={() => console.log('onClickName')}
-                            className=" ml-2 font-bold hover:cursor-pointer">
-                            {userData?.username}
-                        </a>
+                        <a className=" ml-2 font-bold hover:cursor-pointer">{userData?.username}</a>
                         <div>
                             <span className="ml-2 ">{userData?.followers_count}</span>
                             <span className="ml-2 ">{userData?.follows_count}</span>
