@@ -11,7 +11,7 @@ import { devtools } from 'zustand/middleware';
 //   "media_count": 67
 // }
 
-type UserData = {
+export type UserData = {
     id: string;
     name: string;
     username: string;
@@ -21,7 +21,12 @@ type UserData = {
     media_count: number;
 };
 
-export const useUserData = create(
+export type UserDataStore = {
+    userData: UserData | null;
+    setUserData: (newUserData: UserData) => void;
+};
+
+export const useUserData = create<UserDataStore>()(
     devtools(set => ({
         userData: null as UserData | null,
         setUserData: (newUserData: UserData) => set({ userData: newUserData }),

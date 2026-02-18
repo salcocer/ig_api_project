@@ -1,6 +1,6 @@
-import { NextResponse, type NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 import { fetchInstagramData } from '@/lib/api';
+import { NextResponse, type NextRequest } from 'next/server';
 
 export async function GET(
     req: NextRequest,

@@ -30,7 +30,7 @@ import { devtools } from 'zustand/middleware';
 //   }
 // }
 
-type UserMedia = {
+export type UserMedia = {
     data: { id: string }[];
     paging: {
         cursors: {
@@ -40,7 +40,12 @@ type UserMedia = {
     };
 };
 
-export const useUserMedia = create(
+export type UserMediaStore = {
+    userMedia: UserMedia | null;
+    setUserMedia: (newUserMedia: UserMedia) => void;
+};
+
+export const useUserMedia = create<UserMediaStore>()(
     devtools(set => ({
         userMedia: null as UserMedia | null,
         setUserMedia: (newUserMedia: UserMedia) => set({ userMedia: newUserMedia }),
