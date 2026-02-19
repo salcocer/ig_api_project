@@ -1,4 +1,3 @@
-// https://graph.instagram.com/{{api_version}}/{{ig_user_id}}/conversations?platform=instagram
 
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
@@ -16,8 +15,6 @@ export async function GET(req: Request) {
         if (process.env.NODE_ENV === 'development') {
             access_token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || '';
         }
-
-        console.log('fetchInstagramConversations');
 
         const data = await fetchInstagramConversations(
             {

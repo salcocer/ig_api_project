@@ -10,8 +10,6 @@ export default function Profile() {
     const { userData, setUserData } = useUserData((state: UserDataStore) => state);
     const { userMedia, setUserMedia } = useUserMedia((state: UserMediaStore) => state);
 
-    console.log({ userData });
-
     useEffect(() => {
         fetch('/api/instagram/me')
             .then(res => res.json())
@@ -22,7 +20,7 @@ export default function Profile() {
             .catch(error => {
                 setLoading(false);
             });
-    }, []);
+    }, [setUserData]);
 
     useEffect(() => {
         if (!userData?.id) return;
@@ -34,7 +32,7 @@ export default function Profile() {
             .catch(error => {
                 setLoading(false);
             });
-    }, [userData]);
+    }, [userData, setUserMedia]);
 
     return (
         <div className="border-b border-gray-300 ">

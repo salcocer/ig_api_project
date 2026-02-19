@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import ConversationDetail from './ConversationDetail';
 
 // {
 //   "data": [
@@ -11,7 +12,7 @@ import { useEffect, useState } from 'react';
 //   ]
 // }
 
-type Conversation = {
+export type Conversation = {
     id: string;
     updated_time: string;
 };
@@ -29,6 +30,7 @@ export default function Conversations() {
                 setConversations(data?.data || []);
             } catch (e: any) {
                 console.error('Failed to fetch conversations:', e);
+                setError('Failed to fetch conversations');
             } finally {
                 setLoading(false);
             }
@@ -46,13 +48,8 @@ export default function Conversations() {
             )}
 
             <ul className="divide-y">
-                {conversations.map((c: Conversation, i: number) => (
-                    <li key={i} className="p-3 hover:bg-gray-50">
-                        <div className="text-sm font-medium">Conversation ID: {c.id}</div>
-                        <div className="text-xs text-gray-500">
-                            {new Date(c.updated_time).toLocaleString()}
-                        </div>
-                    </li>
+                {conversations.map((conversation: Conversation, i: number) => (
+                    <ConversationDetail key={conversation.id} conversation={conversation} />
                 ))}
             </ul>
         </div>
