@@ -3,10 +3,16 @@ import { useEffect } from 'react';
 import { Conversation } from './Conversations';
 
 export default function ConversationDetail({ conversation }: { conversation: Conversation }) {
-
     useEffect(() => {
-
-    }, [conversation])
+        fetch(`/api/instagram/conversations/${conversation.id}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log('Conversation details:', data);
+            })
+            .catch(err => {
+                console.error('Error fetching conversation details:', err);
+            });
+    }, [conversation]);
 
     return (
         <li key={conversation.id} className="p-3 hover:bg-gray-50">

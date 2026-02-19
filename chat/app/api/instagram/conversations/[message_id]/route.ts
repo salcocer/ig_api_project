@@ -1,8 +1,15 @@
-import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { fetchInstagramConversations } from '@/lib/api';
+import { NextResponse, type NextRequest } from 'next/server';
+import { fetchInstagramConversationMessages } from '@/lib/api';
 
-export async function GET(req: Request) {
+// curl -i -X GET "https://graph.instagram.com/v25.0/<MESSAGE_ID>
+//     &fields=id,created_time,from,to,message
+//     &access_token=<INSTAGRAM_ACCESS_TOKEN>"
+
+export async function GET(
+    req: NextRequest,
+    context: { params: { message_id: string } | Promise<{ message_id: string }> }
+) {
     try {
         const cookieStore = cookies();
         let access_token = (await cookieStore)?.get('access_token')?.value || '';
@@ -15,9 +22,13 @@ export async function GET(req: Request) {
             access_token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || '';
         }
 
-        const data = await fetchInstagramConversations(
+        const params = await context.params;
+        const message_id = params?.message_id;
+
+        const data = await fetchInstagramConversationMessages(
+            `${message_id}`,
             {
-                platform: 'instagram',
+                fields: 'messages{id,created_time,from,to,message}',
             },
             access_token
         ).catch((error: { message: string | undefined }) => {
