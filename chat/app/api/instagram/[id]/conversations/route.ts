@@ -1,9 +1,11 @@
+// https://graph.instagram.com/{{api_version}}/{{ig_user_id}}/conversations?platform=instagram
+
+import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { fetchInstagramData } from '@/lib/api';
-import { NextResponse, type NextRequest } from 'next/server';
+import { fetchInstagramConversations } from '@/lib/api';
 
 export async function GET(
-    req: NextRequest,
+    req: Request,
     context: { params: { id: string } | Promise<{ id: string }> }
 ) {
     try {
@@ -19,12 +21,13 @@ export async function GET(
         }
 
         const params = await context.params;
-        const mediaId = params.id;
+        const { id } = params;
+        console.log('params: ', params);
 
-        const data = await fetchInstagramData(
-            `${mediaId}`,
+        const data = await fetchInstagramConversations(
+            `${id}`,
             {
-                fields: 'id,media_type,media_url,owner,timestamp',
+                platform: 'instagram',
             },
             access_token
         ).catch((error: { message: string | undefined }) => {

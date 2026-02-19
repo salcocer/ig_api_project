@@ -10,6 +10,8 @@ export default function Profile() {
     const { userData, setUserData } = useUserData((state: UserDataStore) => state);
     const { userMedia, setUserMedia } = useUserMedia((state: UserMediaStore) => state);
 
+    console.log({ userData });
+
     useEffect(() => {
         fetch('/api/instagram/me')
             .then(res => res.json())
@@ -27,7 +29,6 @@ export default function Profile() {
         fetch('/api/instagram/media')
             .then(res => res.json())
             .then(data => {
-                // console.log({ data });
                 setUserMedia(data?.media);
             })
             .catch(error => {

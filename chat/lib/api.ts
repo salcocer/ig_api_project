@@ -95,3 +95,26 @@ export async function fetchInstagramMedia(
 
     return response.json();
 }
+
+export async function fetchInstagramConversations(
+    id: string,
+    params: Record<string, string> = {},
+    access_token: string
+) {
+    const url = new URL(`https://graph.instagram.com/${id}/conversations`);
+    url.search = new URLSearchParams({
+        ...params,
+        access_token,
+    }).toString();
+
+    const response = await fetch(url, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(`Instagram API error: ${error.error.message}`);
+    }
+
+    return response.json();
+}

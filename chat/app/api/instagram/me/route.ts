@@ -11,6 +11,7 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
         }
 
+        console.log('Access token from cookie:', access_token);
         if (process.env.NODE_ENV === 'development') {
             access_token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || '';
         }
