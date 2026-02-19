@@ -56,7 +56,7 @@ export default function LogIn() {
     return (
         <div className="w-[30%] min-w-75">
             {loading && <Spinner />}
-            <div className="flex items-center justify-center bg-color  h-full">
+            <div className="flex items-center justify-center  h-full">
                 <div className="w-full max-w-sm p-8">
                     <div className="text-center mb-8">
                         <h1 className="text-4xl font-serif mb-8 text-gray-900 dark:text-gray-100">

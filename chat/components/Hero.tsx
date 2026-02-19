@@ -1,7 +1,7 @@
 export default function Hero() {
     return (
         <div className="w-[60%] min-w-75">
-            <div className="flex items-center justify-center h-full bg-color">
+            <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                     <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
                         Hero Section

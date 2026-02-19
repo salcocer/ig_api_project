@@ -97,11 +97,10 @@ export async function fetchInstagramMedia(
 }
 
 export async function fetchInstagramConversations(
-    id: string,
     params: Record<string, string> = {},
     access_token: string
 ) {
-    const url = new URL(`https://graph.instagram.com/${id}/conversations`);
+    const url = new URL(`https://graph.instagram.com/me/conversations`);
     url.search = new URLSearchParams({
         ...params,
         access_token,

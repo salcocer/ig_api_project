@@ -4,10 +4,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { fetchInstagramConversations } from '@/lib/api';
 
-export async function GET(
-    req: Request,
-    context: { params: { id: string } | Promise<{ id: string }> }
-) {
+export async function GET(req: Request) {
     try {
         const cookieStore = cookies();
         let access_token = (await cookieStore)?.get('access_token')?.value || '';
@@ -20,12 +17,9 @@ export async function GET(
             access_token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || '';
         }
 
-        const params = await context.params;
-        const { id } = params;
-        console.log('params: ', params);
+        console.log('fetchInstagramConversations');
 
         const data = await fetchInstagramConversations(
-            `${id}`,
             {
                 platform: 'instagram',
             },

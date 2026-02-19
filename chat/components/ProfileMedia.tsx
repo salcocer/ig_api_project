@@ -12,7 +12,7 @@ export type MediaDetails = {
     timestamp: string;
 };
 
-export default function Content() {
+export default function ProfileMedia() {
     const [loading, setLoading] = useState(true);
     const [mediaList, setMediaList] = useState<MediaDetails[]>([]);
 
@@ -48,7 +48,7 @@ export default function Content() {
     }, [userMedia]);
 
     return (
-        <div className="h-full w-full min-h-0 border border-gray-400 p-4 overflow-auto">
+        <div className="h-full w-full min-h-0  p-4 overflow-auto background-color-red-100">
             {loading ? (
                 <div className="text-sm text-gray-500">Loading...</div>
             ) : mediaList.length ? (
