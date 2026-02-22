@@ -22,17 +22,17 @@ export default function Profile() {
             });
     }, [setUserData]);
 
-    useEffect(() => {
-        if (!userData?.id) return;
-        fetch('/api/instagram/media')
-            .then(res => res.json())
-            .then(data => {
-                setUserMedia(data?.media);
-            })
-            .catch(error => {
-                setLoading(false);
-            });
-    }, [userData, setUserMedia]);
+    // useEffect(() => {
+    //     if (!userData?.id) return;
+    //     fetch('/api/instagram/media')
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             setUserMedia(data?.media);
+    //         })
+    //         .catch(error => {
+    //             setLoading(false);
+    //         });
+    // }, [userData, setUserMedia]);
 
     return (
         <div className="border-b border-gray-300 ">

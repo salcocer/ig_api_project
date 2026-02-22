@@ -45,17 +45,13 @@ export default function ConversationDetail({ conversation }: { conversation: Con
             .then(res => res.json())
             .then(data => {
                 setConversationDetails(data);
-                console.log('conversation details', data);
                 const last10Messages = data.messages.data.slice(0, 10);
                 const userNameConversation = last10Messages.flatMap((msg: any) => {
                     const toNames = msg?.to?.data?.map((t: any) => t.username) ?? [];
                     const fromName = msg?.from?.username ? [msg.from.username] : [];
-                    console.log('fromName', fromName, 'toNames', toNames);
                     return [...fromName, ...toNames];
                 });
-                console.log('userNameConversation', userNameConversation);
 
-                // extract the name that is not the current user
                 const otherUserNames = userNameConversation.filter(
                     (name: string) => name !== UserData?.username
                 );
@@ -66,7 +62,6 @@ export default function ConversationDetail({ conversation }: { conversation: Con
                 }
 
                 const uniqueOtherUserNames = Array.from(new Set(otherUserNames));
-                console.log('uniqueOtherUserNames', uniqueOtherUserNames);
 
                 if (uniqueOtherUserNames.length === 1) {
                     setDisplayName(uniqueOtherUserNames[0] as string);
@@ -78,10 +73,12 @@ export default function ConversationDetail({ conversation }: { conversation: Con
             });
     }, [conversation]);
 
+    console.log('conversationDetails', conversationDetails);
+
     return (
         <>
             {displayName ? (
-                <li key={conversation.id} className="p-3 hover:bg-gray-50">
+                <li key={conversation.id} className="p-3 hover:bg-gray-50 hover:cursor-pointer">
                     <div className="flex flex-col">
                         <div className="flex items-center py-1">
                             <Image
