@@ -125,3 +125,27 @@ const auth_short_token = `https://api.instagram.com/oauth/access_token?client_id
  )}&code=${code}`;
 
 ```
+
+```
+// ConversatinDetail.tsx
+
+// const [userMessageTo, setUserMessageTo] = useState(null);
+
+// This is to get the profile_picture of the user we are messaging with
+// but at this moment ourt "Meta Account" has not permissions to get the
+// info of another user.
+//
+// useEffect(() => {
+//     if (!conversationDetails) return;
+//     console.log('Conversation details:', conversationDetails);
+//     fetch(`api/instagram/me/${conversationDetails?.messages.data[0]?.to.data[0]?.id}`)
+//         .then(res => res.json())
+//         .then(data => {
+//             setUserMessageTo(data);
+//         })
+//         .catch(err => {
+//             console.error('Error fetching conversation details:', err);
+//         });
+// }, [conversationDetails]);
+
+```

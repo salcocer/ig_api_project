@@ -29,7 +29,7 @@ export default function ProfileMedia() {
         setLoading(true);
         Promise.all(
             ids.map(id =>
-                fetch(`/api/instagram/${id}`)
+                fetch(`/api/instagram/media/${id}`)
                     .then(res => {
                         if (!res.ok) throw new Error(`Fetch failed for ${id}`);
                         return res.json();

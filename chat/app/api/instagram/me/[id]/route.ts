@@ -19,12 +19,12 @@ export async function GET(
         }
 
         const params = await context.params;
-        const mediaId = params.id;
+        const id = params.id;
 
         const data = await fetchInstagramData(
-            `${mediaId}`,
+            `${id}`,
             {
-                fields: 'id,media_type,media_url,owner,timestamp',
+                fields: 'name,profile_pic',
             },
             access_token
         ).catch((error: { message: string | undefined }) => {

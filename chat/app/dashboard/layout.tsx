@@ -4,7 +4,7 @@ import Conversations from '@/components/Conversations';
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex h-screen overflow-hidden">
-            <div className="w-[20%] border-r border-gray-300 flex flex-col">
+            <div className="w-[28%] border-r border-gray-300 flex flex-col">
                 <Profile />
                 <Conversations />
             </div>

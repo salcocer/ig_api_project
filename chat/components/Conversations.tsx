@@ -48,7 +48,7 @@ export default function Conversations() {
             )}
 
             <ul className="divide-y">
-                {conversations.map((conversation: Conversation, i: number) => (
+                {conversations.slice(0, 5).map((conversation: Conversation, i: number) => (
                     <ConversationDetail key={conversation.id} conversation={conversation} />
                 ))}
             </ul>
