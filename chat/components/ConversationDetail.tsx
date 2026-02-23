@@ -3,33 +3,7 @@ import AvatarIcon from './AvatarIcon';
 import { useUserData } from '@/store/useUserData';
 import { Conversation } from './Conversations';
 import { useEffect, useState } from 'react';
-
-export type ConversationDetails = {
-    messages: {
-        data: {
-            id: string;
-            created_time: string;
-            from: {
-                username: string;
-                id: string;
-            };
-            to: {
-                data: {
-                    username: string;
-                    id: string;
-                }[];
-            };
-            message: string;
-        }[];
-        paging: {
-            cursors: {
-                after: string;
-            };
-            next: string;
-        };
-    };
-    id: string;
-};
+import { useConversationDetails, type ConversationDetails } from '@/store/useConversationDetails';
 
 export default function ConversationDetail({ conversation }: { conversation: Conversation }) {
     const [conversationDetails, setConversationDetails] = useState<ConversationDetails | null>(
@@ -39,12 +13,15 @@ export default function ConversationDetail({ conversation }: { conversation: Con
 
     const { userData: UserData } = useUserData();
 
+    const { addConversationDetails, setSelectedConversation } = useConversationDetails();
+
     useEffect(() => {
         if (!conversation && conversationDetails) return;
         fetch(`/api/instagram/conversations/${conversation?.id}`)
             .then(res => res.json())
             .then(data => {
                 setConversationDetails(data);
+                addConversationDetails(data);
                 const last10Messages = data.messages.data.slice(0, 10);
                 const userNameConversation = last10Messages.flatMap((msg: any) => {
                     const toNames = msg?.to?.data?.map((t: any) => t.username) ?? [];
@@ -73,19 +50,16 @@ export default function ConversationDetail({ conversation }: { conversation: Con
             });
     }, [conversation]);
 
-    console.log('conversationDetails', conversationDetails);
-
     return (
         <>
             {displayName ? (
-                <li key={conversation.id} className="p-3 hover:cursor-pointer hover:font-extrabold">
+                <li
+                    key={conversation.id}
+                    className="p-3 hover:cursor-pointer hover:font-extrabold"
+                    onClick={() => setSelectedConversation(conversation?.id)}>
                     <div className="flex flex-col">
                         <div className="flex items-center py-1">
-                            <AvatarIcon
-                                size={20}
-                                className="rounded-full mr-3"
-                                title={displayName}
-                            />
+                            <AvatarIcon size={20} className="rounded-full mr-3" />
                             <div>
                                 {displayName?.length > 14
                                     ? `${displayName!.slice(0, 14)}..`

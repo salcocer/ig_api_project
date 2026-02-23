@@ -9,7 +9,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 <Conversations />
             </div>
 
-            <div className="flex-1">{children}</div>
+            <div className="flex-1 flex flex-col overflow-hidden min-h-0">{children}</div>
         </div>
     );
 }
