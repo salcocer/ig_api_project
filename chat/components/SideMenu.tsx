@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function SideMenu() {
     return (
-        <div className="h-full w-full border border-gray-400">
+        <div className="h-full w-full">
             {/* SideMenu - 60px wide */}
             <div className="p-2 text-xs text-gray-500">
                 SideMenu

@@ -39,14 +39,14 @@ export default function Conversations() {
     }, []);
 
     return (
-        <div className="flex-1 border border-gray-400 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto">
             {loading && <div className="p-4 text-sm text-gray-500">Loading…</div>}
             {error && <div className="p-4 text-sm text-red-600">Error: {error}</div>}
             {!loading && !error && conversations.length === 0 && (
                 <div className="p-4 text-sm text-gray-600">No conversations found.</div>
             )}
 
-            <ul className="divide-y">
+            <ul>
                 {conversations?.slice(0, 12).map((conversation: Conversation, i: number) => (
                     <ConversationDetail key={conversation.id} conversation={conversation} />
                 ))}

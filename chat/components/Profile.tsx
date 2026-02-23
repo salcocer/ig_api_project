@@ -35,14 +35,14 @@ export default function Profile() {
     // }, [userData, setUserMedia]);
 
     return (
-        <div className="border-b border-gray-300 ">
+        <div className="border-b border-gray-300">
             {loading && (
                 <div className="flex items-center justify-center h-32">
                     <Spinner />
                 </div>
             )}
             {/* Profile Header */}
-            <div className="h-[80px] sm:h-[120px] w-full sm:w-auto border border-gray-400 justify-center items-center flex">
+            <div className="h-[80px] sm:h-[120px] w-full sm:w-auto justify-center items-center flex">
                 <div className="flex items-center w-full p-4">
                     {userData?.profile_picture_url && (
                         <Image
