@@ -40,7 +40,6 @@ export default function Conversations() {
 
     return (
         <div className="flex-1 border border-gray-400 overflow-y-auto">
-            <div className="p-4 text-xs text-gray-500">Conversations</div>
             {loading && <div className="p-4 text-sm text-gray-500">Loading…</div>}
             {error && <div className="p-4 text-sm text-red-600">Error: {error}</div>}
             {!loading && !error && conversations.length === 0 && (

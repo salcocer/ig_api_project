@@ -1,8 +1,8 @@
 'use client';
-import Image from 'next/image';
+import AvatarIcon from './AvatarIcon';
+import { useUserData } from '@/store/useUserData';
 import { Conversation } from './Conversations';
 import { useEffect, useState } from 'react';
-import { useUserData } from '@/store/useUserData';
 
 export type ConversationDetails = {
     messages: {
@@ -78,17 +78,19 @@ export default function ConversationDetail({ conversation }: { conversation: Con
     return (
         <>
             {displayName ? (
-                <li key={conversation.id} className="p-3 hover:bg-gray-50 hover:cursor-pointer">
+                <li key={conversation.id} className="p-3 hover:cursor-pointer hover:font-extrabold">
                     <div className="flex flex-col">
                         <div className="flex items-center py-1">
-                            <Image
-                                src={'/user_fill.svg'}
-                                alt={`avatar-${displayName}`}
-                                width={30}
-                                height={30}
+                            <AvatarIcon
+                                size={20}
                                 className="rounded-full mr-3"
+                                title={displayName}
                             />
-                            <div className="text-sm font-small">{displayName}</div>
+                            <div>
+                                {displayName?.length > 14
+                                    ? `${displayName!.slice(0, 14)}..`
+                                    : displayName}
+                            </div>
                         </div>
                     </div>
                 </li>
