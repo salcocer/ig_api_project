@@ -22,18 +22,18 @@ export default function ConversationDetail({ conversation }: { conversation: Con
             .then(data => {
                 setConversationDetails(data);
                 addConversationDetails(data);
-                const last10Messages = data.messages.data.slice(0, 10);
-                const userNameConversation = last10Messages.flatMap((msg: any) => {
+                const last10Messages = data?.messages?.data?.slice(0, 10);
+                const userNameConversation = last10Messages?.flatMap((msg: any) => {
                     const toNames = msg?.to?.data?.map((t: any) => t.username) ?? [];
                     const fromName = msg?.from?.username ? [msg.from.username] : [];
                     return [...fromName, ...toNames];
                 });
 
-                const otherUserNames = userNameConversation.filter(
+                const otherUserNames = userNameConversation?.filter(
                     (name: string) => name !== UserData?.username
                 );
 
-                if (otherUserNames.length === 0) {
+                if (otherUserNames?.length === 0) {
                     setDisplayName(UserData?.username || 'Unknown User');
                     return;
                 }
@@ -55,16 +55,14 @@ export default function ConversationDetail({ conversation }: { conversation: Con
             {displayName ? (
                 <li
                     key={conversation.id}
-                    className="p-3 hover:cursor-pointer hover:font-extrabold"
+                    className="p-2 hover:cursor-pointer hover:font-extrabold"
                     onClick={() => setSelectedConversation(conversation?.id)}>
-                    <div className="flex flex-col">
-                        <div className="flex items-center py-1">
-                            <AvatarIcon size={20} className="rounded-full mr-3" />
-                            <div>
-                                {displayName?.length > 14
-                                    ? `${displayName!.slice(0, 14)}..`
-                                    : displayName}
-                            </div>
+                    <div className="flex items-center p-2 ml-2">
+                        <AvatarIcon size={20} className="rounded-full mr-3" />
+                        <div>
+                            {displayName?.length > 14
+                                ? `${displayName!.slice(0, 14)}..`
+                                : displayName}
                         </div>
                     </div>
                 </li>

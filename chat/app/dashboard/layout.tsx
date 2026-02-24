@@ -1,7 +1,20 @@
 import Profile from '@/components/Profile';
 import Conversations from '@/components/Conversations';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export default function MainLayout({ children }: { children: React.ReactNode }) {
+export default async function MainLayout({ children }: { children: React.ReactNode }) {
+    const cookieStore = cookies();
+    const access_token = (await cookieStore)?.get('access_token')?.value || '';
+    const expires_at = (await cookieStore)?.get('expires_at')?.value || '';
+
+    if (
+        process.env.NODE_ENV === 'production' &&
+        (!access_token || !expires_at || new Date(expires_at) <= new Date())
+    ) {
+        redirect('/');
+    }
+
     return (
         <div className="flex h-screen overflow-hidden">
             <div className="w-[18%] border-r border-gray-300 flex flex-col">
@@ -9,7 +22,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 <Conversations />
             </div>
 
-            <div className="flex-1 flex flex-col overflow-hidden min-h-0">{children}</div>
+            <div className="flex-1 flex flex-col overflow-hidden bg-(--bg-color)">{children}</div>
         </div>
     );
 }
