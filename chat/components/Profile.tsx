@@ -21,14 +21,14 @@ export default function Profile() {
     }, [setUserData]);
 
     return (
-        <div className="p-2 border-b border-gray-300">
+        <div className="p-3 border-b border-gray-300">
             {loading && (
                 <div className="flex items-center justify-center h-32">
                     <Spinner />
                 </div>
             )}
             <div className="h-22 w-full flex justify-center items-center ">
-                <div className="flex items-center w-full p-4">
+                <div className="flex items-center w-full">
                     {userData?.profile_picture_url && (
                         <Image
                             src={userData.profile_picture_url}

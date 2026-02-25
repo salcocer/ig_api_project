@@ -6,18 +6,18 @@ import { useConversationDetails } from '@/store/useConversationDetails';
 export default function ConversationDetail({ conversation }: { conversation: Conversation }) {
     const { setSelectedConversationId } = useConversationDetails();
 
-    const otherParticipant = conversation.participants.data?.[1]?.username
-        ? conversation.participants.data[1].username
-        : conversation.participants.data[0].username;
+    const otherParticipant = conversation.participants?.data?.[1]?.username
+        ? conversation.participants?.data?.[1]?.username
+        : conversation.participants?.data?.[0]?.username;
 
     return (
         <li
             key={conversation.id}
-            className="p-2 hover:cursor-pointer hover:font-extrabold"
+            className="w-50 h-10 m-4 flex items-center justify-items-center hover:cursor-pointer hover:font-extrabold"
             onClick={() => setSelectedConversationId(conversation.id)}>
-            <div className="flex items-center p-2 ml-2">
-                <AvatarIcon size={20} className="rounded-full mr-3" />
-                <div>{otherParticipant}</div>
+            <div className="flex">
+                <AvatarIcon size={20} className="mr-3" />
+                <div>{otherParticipant.slice(0, 10)}</div>
             </div>
         </li>
     );
