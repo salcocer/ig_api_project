@@ -1,72 +1,24 @@
 'use client';
 import AvatarIcon from './AvatarIcon';
-import { useUserData } from '@/store/useUserData';
 import { Conversation } from './Conversations';
-import { useEffect, useState } from 'react';
-import { useConversationDetails, type ConversationDetails } from '@/store/useConversationDetails';
+import { useConversationDetails } from '@/store/useConversationDetails';
 
 export default function ConversationDetail({ conversation }: { conversation: Conversation }) {
-    const [conversationDetails, setConversationDetails] = useState<ConversationDetails | null>(
-        null
-    );
-    const [displayName, setDisplayName] = useState<string | null>(null);
+    const { setSelectedConversationId } = useConversationDetails();
 
-    const { userData: UserData } = useUserData();
-
-    const { addConversationDetails, setSelectedConversation } = useConversationDetails();
-
-    useEffect(() => {
-        if (!conversation && conversationDetails) return;
-        fetch(`/api/instagram/conversations/${conversation?.id}`)
-            .then(res => res.json())
-            .then(data => {
-                setConversationDetails(data);
-                addConversationDetails(data);
-                const last10Messages = data?.messages?.data?.slice(0, 10);
-                const userNameConversation = last10Messages?.flatMap((msg: any) => {
-                    const toNames = msg?.to?.data?.map((t: any) => t.username) ?? [];
-                    const fromName = msg?.from?.username ? [msg.from.username] : [];
-                    return [...fromName, ...toNames];
-                });
-
-                const otherUserNames = userNameConversation?.filter(
-                    (name: string) => name !== UserData?.username
-                );
-
-                if (otherUserNames?.length === 0) {
-                    setDisplayName(UserData?.username || 'Unknown User');
-                    return;
-                }
-
-                const uniqueOtherUserNames = Array.from(new Set(otherUserNames));
-
-                if (uniqueOtherUserNames.length === 1) {
-                    setDisplayName(uniqueOtherUserNames[0] as string);
-                }
-            })
-
-            .catch(err => {
-                console.error('Error fetching conversation details:', err);
-            });
-    }, [conversation]);
+    const otherParticipant = conversation.participants.data?.[1]?.username
+        ? conversation.participants.data[1].username
+        : conversation.participants.data[0].username;
 
     return (
-        <>
-            {displayName ? (
-                <li
-                    key={conversation.id}
-                    className="p-2 hover:cursor-pointer hover:font-extrabold"
-                    onClick={() => setSelectedConversation(conversation?.id)}>
-                    <div className="flex items-center p-2 ml-2">
-                        <AvatarIcon size={20} className="rounded-full mr-3" />
-                        <div>
-                            {displayName?.length > 14
-                                ? `${displayName!.slice(0, 14)}..`
-                                : displayName}
-                        </div>
-                    </div>
-                </li>
-            ) : null}
-        </>
+        <li
+            key={conversation.id}
+            className="p-2 hover:cursor-pointer hover:font-extrabold"
+            onClick={() => setSelectedConversationId(conversation.id)}>
+            <div className="flex items-center p-2 ml-2">
+                <AvatarIcon size={20} className="rounded-full mr-3" />
+                <div>{otherParticipant}</div>
+            </div>
+        </li>
     );
 }

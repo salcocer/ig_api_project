@@ -28,7 +28,7 @@ export async function GET(
         const data = await fetchInstagramConversationMessages(
             `${message_id}`,
             {
-                fields: 'messages{id,created_time,from,to,message}',
+                fields: 'participants,messages{id,created_time,from,to,message,reactions,shares,attachments}',
             },
             access_token
         ).catch((error: { message: string | undefined }) => {

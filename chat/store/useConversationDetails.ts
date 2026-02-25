@@ -29,7 +29,20 @@ import { devtools } from 'zustand/middleware';
 //       "next": "https://graph.instagram.com/v24.0/aWdfZAG06MzQwMjgyMzY2ODQxNzEwMzAxMjQ0Mjc2MDMzNzY0NTMzNjk3MDE5/messages?access_token=IGAAMLTwGYilJBZAFk2RTREazlhbHJkT0tWdlpudC1jMjd0bW5VMHJqM0dOb1h6LUZAxVzdldnJqLV9VN3ZAVUkZApTnVXN2NpTkdMbXpQOS01R0FiV1pmSS1TbTl3S2dfNHFuSlgxU0FtcHhDS0J6Vm9WYVpjamhvYzdocFoxaDdEcwZDZD&fields=id%2Ccreated_time%2Cfrom%2Cto%2Cmessage&limit=25&after=ZAXlKamRYSnpiM0lpT2lJek1qWTNOekk1TnpRM016azBNems0T1Rnek5EWXdNRE00TXpBM01EQTNOamt5T0NKOQZDZD"
 //     }
 //   },
-//   "id": "aWdfZAG06MzQwMjgyMzY2ODQxNzEwMzAxMjQ0Mjc2MDMzNzY0NTMzNjk3MDE5"
+//   "id": "aWdfZAG06MzQwMjgyMzY2ODQxNzEwMzAxMjQ0Mjc2MDMzNzY0NTMzNjk3MDE5",
+//   "participants": {
+//     "data": [
+//       {
+//         "username": "stalynalejandro_alcocer",
+//         "id": "17841446739229368"
+//       },
+//       {
+//         "username": "alcoocer_17",
+//         "id": "2348200432365801"
+//       }
+//     ]
+//   },
+//   "updated_time": "2026-02-20T21:26:06+0000"
 // }
 
 export type ConversationDetails = {
@@ -57,11 +70,20 @@ export type ConversationDetails = {
         };
     };
     id: string;
+    participants: {
+        data: {
+            username: string;
+            id: string;
+        }[];
+    };
+    updated_time: string;
 };
 
 export type ConversationsDetailsStore = {
     conversations: ConversationDetails[] | [];
     selectedConversation: ConversationDetails | null;
+    selectedConversationId: string | null;
+    setSelectedConversationId: (selectedConversation: string | null) => void;
     setSelectedConversation: (selectedConversation: string) => void;
     addConversationDetails: (newConversationDetails: ConversationDetails) => void;
 };
@@ -70,6 +92,16 @@ export const useConversationDetails = create<ConversationsDetailsStore>()(
     devtools(set => ({
         conversations: [],
         selectedConversation: null,
+        selectedConversationId: null,
+        setSelectedConversationId: (selectedConversation: string | null) => {
+            set(state => ({
+                selectedConversationId: selectedConversation,
+                selectedConversation:
+                    selectedConversation != null
+                        ? state.conversations.find(c => c.id === selectedConversation) || null
+                        : null,
+            }));
+        },
         setSelectedConversation: (selectedConversation: string) => {
             set(state => ({
                 selectedConversation:

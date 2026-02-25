@@ -18,6 +18,7 @@ export async function GET(req: Request) {
         const data = await fetchInstagramConversations(
             {
                 platform: 'instagram',
+                fields: 'updated_time,participants{username,id}',
             },
             access_token
         ).catch((error: { message: string | undefined }) => {

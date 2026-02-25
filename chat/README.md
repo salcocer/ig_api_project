@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Business Login for Instagram
 
-## Getting Started
+Business Login is a custom login flow that allows your app to ask for permissions to access your app **user's Instagram professional account** data and to get **access token** to use in your **app's API requests**.
 
-First, run the development server:
+- _instagram_business_basic_
+- _instagram_business_content_publish_
+- _instagram_business_manage_messages_
+- _instagram_business_manage_comments_
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## How it works
+
+Your app user launches the _login flow_ on your appp or website by clicking _your embed URL link or button_.
+
+This _embed URL_, that you set up in the **App Dashboard** with the permissions you are requesting from your app users, opens an **authorization window**.
+
+Your app user uses this window to _grant your app permissions_.
+
+When the user submits the _login flow_, Meta redirects your app user to your redirect URI and sends an **authorization code**.
+
+Your app can then exchange this **authorization code** for a short-lived ig user **access token**. An _ig-user-id_ for your _app-user_. And a _list of permissions_ the app user granted _your app_.
+
+- Your app can exchanged this **short-lived acccess token** for a **long-lived access token** tha is valid for a 60 days.
+
+Authorization Window > Auth Code > Short-lived Access Token > Long-lived Access Token.
+
+## Before you start
+
+Add the Instagram Product to your app and configure your **Business Login Settings** in the Meta App Dashboard.
+
+## Embed the business login URL
+
+You should have completed this step during Instagram app setup in the App Dashboard, but if not,
+
+1. Copy the **Embed URL** from the **Set up Business Login** in the App Dashboard.
+2. Paste the URL in an anchor tag or button on your app or website to launch the login flow.
+
+### API setup with Instagram Login
+
+App users log in with their Instagram credentials.
+
+To customize the Ig use case so that your app uses Business Login for Ig to log users in to your app, select **API setup with Ig login** in the left side menu.
+
+The app name, Instagram app ID, and Instagram App Secret are shown and can be used for test API calls.
+
+1. Click **Add al requirements permissions.** The _instagram_business_basic_ and _instagram_business_manage_messages_ premissions are required for this functionality and added by default.
+
+2. In the **Generate Access Tokens** section click **Add account**.
+
+3. Click **Continue** and log in to your ig account in the popup window.
+
+4. Click **save** and **got it** to return to the App Dashboard.
+
+5. In the **Configure webhooks** section, add your **Callback URL** and **Verify Token** to configure webhooks or use services that help you set up an endpoint.
+
+6. Click **Verify and save**. The verification must be successful to subscribe to webhooks fields.
+
+7. In the **Configure Webhooks** section, subscribe to available Instagram webhooks.
+
+8. Click **set up** in the **Set up Instagram business login**.
+
+9. Add your **Redirect URL** and click **save**.
+
+10. Click **Business Login Settings** and add your _Deauthorization callback url_ and _data deletion request URL_ and click _save_. You can also add additional redirects URIs.
+
+11. If you are ready to submit your app for review, click **Go to app review** in the **Complete App Review** section. This is only required if you are creating solutions for clients.
+
+### API integration helper
+
+The API Integration Helper allows you to send a test message using the Instagram API. Only available for apps that use Business Login for Instagram.
+
+### OAuth token storage and management
+
+Short answer: treat the query string `code` as an authorization code only (never store it client-side).
+
+Exchange it on the server for a short-lived access token, and then exchange that for a long-lived access token.
+
+Persist the long token + expiry + profile in your server DB, and set an HttpOnly session cookie (session id) so the browser can be redirected to the dashboard without exposing tokens.
+
+1. Receive `code` server-side (on your redirect path).
+
+2. Server exchanges code => short-lived token. Response contains `access_token` and `expires_in`.
+
+3. Immediately exchange short-lived => long-lived. Response contains `access_token` (long) and `expires_in`.
+
+4. Fetch profile (/me?fields=id,name) with the long token to get user id, name.
+
+5. Persist server-side (in your lib/db.ts or real DB).
+    - store record: {id, name, access_token, expires_at}
+    - do NOT persist the auth `code`
+
+6. Create a session cookie for the browser:
+    - Option A: set an HttpOnly cookie with a session `id` or `user_id`. Then your APIs read that cookie and load the token from DB.
+
+7. Redirect user to `/dashboard`. The dashboard calls your server API. Which reads the cookie, looks up the user record in DB, and returns profile data - frontend never holds raw tokens.
+
+Endpoints
+
+    https://www.instagram.com/oauth/authorize – To get an authorization code from your app user
+    https://api.instagram.com/oauth/access_token – To exchange an authorization code for a short-lived access token
+    https://graph.instagram.com/access_token – To exchange a valid short-lived access token for a long-lived access token
+    https://graph.instagram.com/refresh_access_token – To refresh a valid long-lived access token for another 60 days
+
+curl -X POST https://api.instagram.com/oauth/access_token \
+ -F 'client_id=990602627938098' \
+ -F 'client_secret=a1b2C3D4' \
+ -F 'grant_type=authorization_code' \
+ -F 'redirect_uri=https://my.m.redirect.net/' \
+ -F 'code=AQBx-hBsH3...'
+
+Never store the short-lived token in client-side storage. Exchange the code server-side immediately, persist the long-lived token + expiry in your server DB, and give the browser a server-controlled session (httpOnly cookie or session id).
+
+- Short token is sensitive and temporary - exchanging it immediately prevents leakage.
+- Long token (or session id) belongs on the server so front-end JS never sees tokens.
+- Cookies used by server APIs let your frontend call safe endpoints without exposing raw tokens.
+
+### When to refresh
+
+- Long-lived tokens typically last ~60 days. Refresh when `expires_at - now < threshold`
+- Refresh strategies:
+- If refresh fails or user revoked access, require re-auth (redirect to OAuth start).
+
+```
+const auth_short_token = `https://api.instagram.com/oauth/access_token?client_id=${CLIENT_ID}&client_secret=${process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(
+ REDIRECT_URI,
+ )}&code=${code}`;
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
+// ConversatinDetail.tsx
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+// const [userMessageTo, setUserMessageTo] = useState(null);
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+// This is to get the profile_picture of the user we are messaging with
+// but at this moment ourt "Meta Account" has not permissions to get the
+// info of another user.
+//
+// useEffect(() => {
+//     if (!conversationDetails) return;
+//     console.log('Conversation details:', conversationDetails);
+//     fetch(`api/instagram/me/${conversationDetails?.messages.data[0]?.to.data[0]?.id}`)
+//         .then(res => res.json())
+//         .then(data => {
+//             setUserMessageTo(data);
+//         })
+//         .catch(err => {
+//             console.error('Error fetching conversation details:', err);
+//         });
+// }, [conversationDetails]);
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```

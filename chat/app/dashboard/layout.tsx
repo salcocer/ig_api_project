@@ -1,5 +1,6 @@
 import Profile from '@/components/Profile';
 import Conversations from '@/components/Conversations';
+import ConversationFetcher from '@/components/ConversationFetcher';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -21,8 +22,10 @@ export default async function MainLayout({ children }: { children: React.ReactNo
                 <Profile />
                 <Conversations />
             </div>
-
-            <div className="flex-1 flex flex-col overflow-hidden bg-(--bg-color)">{children}</div>
+            <div className="flex-1 flex flex-col overflow-hidden bg-(--bg-color)">
+                <ConversationFetcher />
+                {children}
+            </div>
         </div>
     );
 }
