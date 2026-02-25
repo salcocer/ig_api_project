@@ -54,7 +54,7 @@ export default function LogIn() {
     }, [code, router]);
 
     return (
-        <div className="w-[30%] min-w-75">
+        <div className="w-full min-w-75">
             {loading && <Spinner />}
             <div className="flex items-center justify-center  h-full">
                 <div className="w-full max-w-sm p-8">
