@@ -41,8 +41,8 @@ export default function ConversationFetcher() {
     return (
         <div aria-live="polite">
             {loading && (
-                <div className=" p-2 text-sm text-gray-500 flex w-full  justify-center items-center">
-                    Loading conversation…
+                <div className=" p-2 text-sm text-gray-500 flex-1 h-screen z-1 w-full  flex justify-items-center justify-center items-center">
+                    Loading…
                 </div>
             )}
             {error && <div className="p-2 text-sm text-red-600">Error: {error}</div>}

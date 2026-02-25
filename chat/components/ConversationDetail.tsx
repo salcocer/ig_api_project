@@ -13,11 +13,11 @@ export default function ConversationDetail({ conversation }: { conversation: Con
     return (
         <li
             key={conversation.id}
-            className="w-50 h-10 m-4 flex items-center justify-items-center hover:cursor-pointer hover:font-extrabold"
+            className="p-5 flex items-center justify-start hover:cursor-pointer hover:font-extrabold"
             onClick={() => setSelectedConversationId(conversation.id)}>
             <div className="flex">
                 <AvatarIcon size={20} className="mr-3" />
-                <div>{otherParticipant.slice(0, 10)}</div>
+                <div>{otherParticipant.slice(0, 12)}</div>
             </div>
         </li>
     );

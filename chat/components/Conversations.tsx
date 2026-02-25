@@ -3,21 +3,6 @@
 import { useEffect, useState } from 'react';
 import ConversationDetail from './ConversationDetail';
 
-//   "participants": {
-//     "data": [
-//       {
-//         "username": "stalynalejandro_alcocer",
-//         "id": "17841446739229368"
-//       },
-//       {
-//         "username": "alcoocer_17",
-//         "id": "2348200432365801"
-//       }
-//     ]
-//   },
-//   "id": "aWdfZAG06MzQwMjgyMzY2ODQxNzEwMzAxMjQ0Mjc2MTkzNjgyMTMzNjQ0OTUx",
-//   "updated_time": "2026-02-18T18:38:19+0000"
-
 export type Conversation = {
     id: string;
     updated_time: string;
