@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useUserData } from '@/store/useUserData';
 import { ConversationMessage, useConversationDetails } from '@/store/useConversationDetails';
 import '../globals.css';
+import MessageComposer from '@/components/MessageComposer';
 
 function formatTime(iso?: string) {
     if (!iso) return '';
@@ -23,7 +24,7 @@ export default function DashboardContent() {
         const container = document.getElementById('messages-container');
         if (container) {
             container.scrollTo({
-                top: container.scrollHeight + 100,
+                top: container.scrollHeight,
                 behavior: 'instant',
             });
         }
@@ -38,7 +39,7 @@ export default function DashboardContent() {
             ) : (
                 <div
                     id="messages-container"
-                    className="flex p-4 overflow-y-auto items-center justify-center">
+                    className="flex p-4 overflow-y-auto items-center justify-center mb-2 pb-10">
                     <div className="w-[90%]">
                         {sorted.map((m: ConversationMessage) => {
                             const me = m?.from?.username === userData?.username;
@@ -52,9 +53,6 @@ export default function DashboardContent() {
                                 : m?.shares?.data?.[0]?.link
                                   ? 'video'
                                   : 'text';
-
-                            console.log(media);
-                            console.log(m);
 
                             return (
                                 <div key={m.id} className={`mb-4 ${me ? 'text-right' : ''}`}>
@@ -90,6 +88,8 @@ export default function DashboardContent() {
                     </div>
                 </div>
             )}
+
+            <MessageComposer />
         </>
     );
 }

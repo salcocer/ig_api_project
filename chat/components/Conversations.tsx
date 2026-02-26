@@ -38,12 +38,12 @@ export default function Conversations() {
     }, []);
 
     return (
-        <div>
+        <div className="h-full border-r border-gray-300 overflow-y-auto">
             {loading && <div className="p-4 text-sm text-gray-500">Loading…</div>}
             {error && <div className="p-4 text-sm text-red-600">Error: {error}</div>}
 
             <ul>
-                {conversations?.slice(0, 12).map((conversation: Conversation, i: number) => (
+                {conversations?.map((conversation: Conversation, i: number) => (
                     <ConversationDetail key={conversation.id} conversation={conversation} />
                 ))}
             </ul>

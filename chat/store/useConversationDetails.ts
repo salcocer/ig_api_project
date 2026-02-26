@@ -71,6 +71,7 @@ export type ConversationsDetailsStore = {
     conversations: ConversationDetails[] | [];
     selectedConversation: ConversationDetails | null;
     selectedConversationId: string | null;
+    addMessageToConversation: (conversationId: string, message: ConversationMessage) => void;
     addConversationDetails: (newConversationDetails: ConversationDetails) => void;
     setSelectedConversation: (selectedConversation: string) => void;
     setSelectedConversationId: (selectedConversation: string | null) => void;
@@ -90,6 +91,27 @@ export const useConversationDetails = create<ConversationsDetailsStore>()(
                         : null,
             }));
         },
+        addMessageToConversation: (conversationId: string, message: ConversationMessage) =>
+            set(state => {
+                const conversations = state.conversations.map(c => {
+                    if (c.id !== conversationId) return c;
+                    const messages = c.messages
+                        ? { ...c.messages }
+                        : { data: [], paging: { cursors: { after: '' }, next: '' } };
+                    const data = messages.data ? [message, ...messages.data] : [message];
+                    return { ...c, messages: { ...messages, data } };
+                });
+
+                return {
+                    conversations,
+                    selectedConversation:
+                        state.selectedConversation &&
+                        state.selectedConversation.id === conversationId
+                            ? conversations.find(x => x.id === conversationId) ||
+                              state.selectedConversation
+                            : state.selectedConversation,
+                };
+            }),
         setSelectedConversation: (selectedConversation: string) => {
             set(state => ({
                 selectedConversation:
