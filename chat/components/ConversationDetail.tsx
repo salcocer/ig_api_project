@@ -15,9 +15,9 @@ export default function ConversationDetail({ conversation }: { conversation: Con
             key={conversation.id}
             className={`hover:bg-(--bg-selected-gray-color) hover:cursor-pointer hover:font-extrabold ${selectedConversationId === conversation.id ? 'bg-(--bg-selected-gray-color) w-full font-extrabold' : ''}`}
             onClick={() => setSelectedConversationId(conversation.id)}>
-            <div className="p-2 flex h-12 sm:h-8 md:h-12 items-center justify-center sm:justify-start">
+            <div className="p-2 flex h-16 items-center justify-center sm:justify-start">
                 <AvatarIcon size={20} className="hidden sm:flex m-3" />
-                <div className="text-sm md:text-lg">{otherParticipant.slice(0, 12)}</div>
+                <a className="text-sm md:text-lg">{otherParticipant.slice(0, 12)}</a>
             </div>
         </li>
     );

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import ConversationDetail from './ConversationDetail';
+import useKeysConversation from '@/hooks/useKeysConversation';
 
 export type Conversation = {
     id: string;
@@ -18,6 +19,8 @@ export default function Conversations() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [conversations, setConversations] = useState<Conversation[]>([]);
+
+    useKeysConversation(conversations);
 
     useEffect(() => {
         fetch('/api/instagram/conversations')
