@@ -9,3 +9,4 @@ When you want to stay connected but don't want to get sucked into the social med
 Say goodbye to endless scrolling and notifications, and hello to genuine conversations with the people who matter most.
 
 <img width="1911" height="961" alt="Screenshot from 2026-02-26 13-11-59" src="https://github.com/user-attachments/assets/95168f50-9f4d-4229-8c28-d7f6b85aead1" />
+<img width="549" height="961" alt="image" src="https://github.com/user-attachments/assets/1e6ffd90-3cd8-4b84-bd06-eba1440fe1dc" />
