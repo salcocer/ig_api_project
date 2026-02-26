@@ -7,3 +7,5 @@ ChatOnly makes it easy to communicate with your favorite people, keep up with ev
 When you want to stay connected but don't want to get sucked into the social media rabbit hole, ChatOnly is the perfect solution. With its clean, distraction-free design, you can focus on what really matters: connecting with your friends and family in a meaningful way. Whether you're sharing photos, videos, or just chatting, ChatOnly keeps it simple and enjoyable.
 
 Say goodbye to endless scrolling and notifications, and hello to genuine conversations with the people who matter most.
+
+<img width="1911" height="961" alt="Screenshot from 2026-02-26 13-11-59" src="https://github.com/user-attachments/assets/95168f50-9f4d-4229-8c28-d7f6b85aead1" />
