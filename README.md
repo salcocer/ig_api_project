@@ -1,5 +1,4 @@
-# ChatOnly
-
+# OnlyChat
  <!-- ChatOnly is a clean, distraction-free chat app built for real conversations with the people who matter most. Instead of feeds, likes, and endless scrolling, ChatOnly focuses on the essentials: one-to-one and group messaging, plus simple photo and video sharing so friends and families can stay close in a natural, meaningful way. With a modern, minimal interface across web, iOS, and Android. -->
 
  <!-- ChatOnly makes it easy to communicate with your favorite people, keep up with everyday moments, and have deeper conversations—without the noise of social media. -->
