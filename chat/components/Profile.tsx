@@ -27,7 +27,7 @@ export default function Profile() {
                     <Spinner />
                 </div>
             )}
-            <div className="flex items-center justify-start">
+            <div className="flex items-center justify-center sm:justify-start">
                 {userData?.profile_picture_url && (
                     <Image
                         src={userData.profile_picture_url}
@@ -37,7 +37,7 @@ export default function Profile() {
                         className="w-16 h-16 rounded-full hover:cursor-pointer "
                     />
                 )}
-                <div className="ml-1 flex flex-col">
+                <div className="hidden sm:flex sm:flex-col ml-1">
                     <a className="ml-2 font-bold hover:cursor-pointer ">{userData?.username}</a>
                     <div className="flex">
                         <span className="ml-2 flex items-center text-xs sm:text-sm">{`${userData?.followers_count}`}</span>

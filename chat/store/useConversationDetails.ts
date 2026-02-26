@@ -1,4 +1,3 @@
-import { ConversationMessage } from '@/app/dashboard/page';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -20,6 +19,52 @@ export type ConversationDetails = {
         }[];
     };
     updated_time: string;
+};
+
+export type ConversationMessage = {
+    id: string;
+    created_time: string;
+    from: {
+        username: string;
+        id: string;
+    };
+    to: {
+        data: {
+            username: string;
+            id: string;
+        }[];
+    };
+    message: string;
+    shares?: {
+        data: {
+            link: string;
+        }[];
+        paging: {
+            cursors: {
+                before: string;
+                after: string;
+            };
+            next: string;
+        };
+    };
+    attachments?: {
+        data: {
+            image_data: {
+                width: number;
+                height: number;
+                max_width: number;
+                max_height: number;
+                url: string;
+                preview_url: string;
+            };
+        }[];
+        paging: {
+            cursors: {
+                before: string;
+                after: string;
+            };
+        };
+    };
 };
 
 export type ConversationsDetailsStore = {

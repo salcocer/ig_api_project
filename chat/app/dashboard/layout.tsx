@@ -18,7 +18,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
 
     return (
         <div className="flex h-screen overflow-hidden">
-            <div className="border-r border-gray-300 flex flex-col w-fit md:w-80">
+            <div className="border-r border-gray-300 w-30 sm:w-60 md:w-81 bg-(--bg-gray-color)">
                 <Profile />
                 <Conversations />
             </div>

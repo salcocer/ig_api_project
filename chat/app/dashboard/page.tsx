@@ -1,7 +1,7 @@
 'use client';
+import { useEffect } from 'react';
 import { useUserData } from '@/store/useUserData';
-import { useEffect, useState } from 'react';
-import { useConversationDetails } from '@/store/useConversationDetails';
+import { ConversationMessage, useConversationDetails } from '@/store/useConversationDetails';
 import '../globals.css';
 
 function formatTime(iso?: string) {
@@ -9,52 +9,6 @@ function formatTime(iso?: string) {
     const d = new Date(iso);
     return d.toLocaleString();
 }
-
-export type ConversationMessage = {
-    id: string;
-    created_time: string;
-    from: {
-        username: string;
-        id: string;
-    };
-    to: {
-        data: {
-            username: string;
-            id: string;
-        }[];
-    };
-    message: string;
-    shares?: {
-        data: {
-            link: string;
-        }[];
-        paging: {
-            cursors: {
-                before: string;
-                after: string;
-            };
-            next: string;
-        };
-    };
-    attachments?: {
-        data: {
-            image_data: {
-                width: number;
-                height: number;
-                max_width: number;
-                max_height: number;
-                url: string;
-                preview_url: string;
-            };
-        }[];
-        paging: {
-            cursors: {
-                before: string;
-                after: string;
-            };
-        };
-    };
-};
 
 export default function DashboardContent() {
     const { userData } = useUserData();
@@ -68,7 +22,10 @@ export default function DashboardContent() {
     useEffect(() => {
         const container = document.getElementById('messages-container');
         if (container) {
-            container.scrollTop = container.scrollHeight;
+            container.scrollTo({
+                top: container.scrollHeight + 100,
+                behavior: 'instant',
+            });
         }
     }, [messages]);
 
@@ -84,51 +41,47 @@ export default function DashboardContent() {
                     className="flex p-4 overflow-y-auto items-center justify-center">
                     <div className="w-[90%]">
                         {sorted.map((m: ConversationMessage) => {
-                            if (m.from?.username === userData?.username) {
-                                const media =
-                                    m?.shares?.data?.[0]?.link ||
-                                    m?.attachments?.data?.[0]?.image_data?.url;
-
-                                return (
-                                    <div key={m.id} className="mb-4 text-right">
-                                        <div className="text-xs text-gray-400">
-                                            You · {formatTime(m.created_time)}
-                                        </div>
-                                        {m.message ? (
-                                            <div className="inline-block bg-blue-100 rounded-lg px-3 py-2 mt-1 text-black">
-                                                {m.message}
-                                            </div>
-                                        ) : (
-                                            <a
-                                                href={media}
-                                                target="_blank"
-                                                className="inline-block text-blue-400 italic mt-1">
-                                                [shared media]
-                                            </a>
-                                        )}
-                                    </div>
-                                );
-                            }
+                            const me = m?.from?.username === userData?.username;
 
                             const media =
                                 m?.shares?.data?.[0]?.link ||
                                 m?.attachments?.data?.[0]?.image_data?.url;
 
+                            const type_media = m?.attachments?.data?.[0]?.image_data
+                                ? 'image'
+                                : m?.shares?.data?.[0]?.link
+                                  ? 'video'
+                                  : 'text';
+
+                            console.log(media);
+                            console.log(m);
+
                             return (
-                                <div key={m.id} className="mb-4">
+                                <div key={m.id} className={`mb-4 ${me ? 'text-right' : ''}`}>
                                     <div className="text-xs text-gray-400">
-                                        {m.from?.username} · {formatTime(m.created_time)}
+                                        You · {formatTime(m.created_time)}
                                     </div>
                                     {m.message ? (
-                                        <div className="inline-block bg-gray-100 rounded-lg px-3 py-2 mt-1 text-black">
+                                        <div
+                                            className={`inline-block ${me ? 'bg-blue-100 text-black' : 'bg-gray-300 text-black'} rounded-lg px-3 py-2 mt-1 text-sm sm:text-lg`}>
                                             {m.message}
                                         </div>
                                     ) : (
                                         <a
                                             href={media}
                                             target="_blank"
-                                            className="inline-block text-blue-900 italic mt-1">
-                                            [shared media]
+                                            className={`inline-block ${me ? 'text-blue-400' : 'text-gray-400'} italic mt-1 min-h-[400px] `}>
+                                            {type_media === 'image' ? (
+                                                <img
+                                                    className="w-60 h-fit rounded"
+                                                    src={media}
+                                                    alt={media}
+                                                />
+                                            ) : type_media === 'video' ? (
+                                                <video controls className="w-60 h-fit rounded">
+                                                    <source src={media} type="video/mp4" />
+                                                </video>
+                                            ) : null}
                                         </a>
                                     )}
                                 </div>
