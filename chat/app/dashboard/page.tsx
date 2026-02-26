@@ -70,11 +70,19 @@ export default function DashboardContent() {
                                             target="_blank"
                                             className={`inline-block ${me ? 'text-blue-400' : 'text-gray-400'} italic mt-1 min-h-[400px] `}>
                                             {type_media === 'image' ? (
-                                                <img
-                                                    className="w-60 h-fit rounded"
-                                                    src={media}
-                                                    alt={media}
-                                                />
+                                                <div className="flex gap-2 flex-wrap">
+                                                    {m.attachments?.data?.map((att, i) => {
+                                                        const url = att?.image_data?.url || att?.image_data?.preview_url;
+                                                        return url ? (
+                                                            <img
+                                                                key={i}
+                                                                className="w-60 h-auto rounded"
+                                                                src={url}
+                                                                alt={url}
+                                                            />
+                                                        ) : null;
+                                                    })}
+                                                </div>
                                             ) : type_media === 'video' ? (
                                                 <video controls className="w-60 h-fit rounded">
                                                     <source src={media} type="video/mp4" />
