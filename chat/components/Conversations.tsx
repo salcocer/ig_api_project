@@ -39,7 +39,7 @@ export default function Conversations() {
             {loading && <div className="p-4 text-sm text-gray-500">Loading…</div>}
             {error && <div className="p-4 text-sm text-red-600">Error: {error}</div>}
 
-            <ul className="h-[calc(100vh-200px)] overflow-y-auto">
+            <ul>
                 {conversations?.slice(0, 12).map((conversation: Conversation, i: number) => (
                     <ConversationDetail key={conversation.id} conversation={conversation} />
                 ))}

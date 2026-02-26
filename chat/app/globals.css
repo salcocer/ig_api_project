@@ -6,10 +6,12 @@
   --bg-color: #ffffff;
   --txt-color: #000000;
   --bg-gray-color: #f9fafb;
+  --bg-selected-gray-color: #e5e7eb;
 }
 
 .dark {
   --bg-color: #1a1a1a;
   --txt-color: #ffffff;
   --bg-gray-color: #1a1a1a;
+  --bg-selected-gray-color: #333333;
 }

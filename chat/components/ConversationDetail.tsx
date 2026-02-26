@@ -4,7 +4,7 @@ import { Conversation } from './Conversations';
 import { useConversationDetails } from '@/store/useConversationDetails';
 
 export default function ConversationDetail({ conversation }: { conversation: Conversation }) {
-    const { setSelectedConversationId } = useConversationDetails();
+    const { selectedConversationId, setSelectedConversationId } = useConversationDetails();
 
     const otherParticipant = conversation.participants?.data?.[1]?.username
         ? conversation.participants?.data?.[1]?.username
@@ -13,9 +13,9 @@ export default function ConversationDetail({ conversation }: { conversation: Con
     return (
         <li
             key={conversation.id}
-            className="hover:cursor-pointer hover:font-extrabold m-2 md:m-4"
+            className={`hover:bg-(--bg-selected-gray-color) hover:cursor-pointer hover:font-extrabold ${selectedConversationId === conversation.id ? 'bg-(--bg-selected-gray-color) w-full font-extrabold' : ''}`}
             onClick={() => setSelectedConversationId(conversation.id)}>
-            <div className="flex h-10 sm:h-8 md:h-12 items-center justify-center sm:justify-start">
+            <div className="p-2 flex h-12 sm:h-8 md:h-12 items-center justify-center sm:justify-start">
                 <AvatarIcon size={20} className="hidden sm:flex m-3" />
                 <div className="text-sm md:text-lg">{otherParticipant.slice(0, 12)}</div>
             </div>
