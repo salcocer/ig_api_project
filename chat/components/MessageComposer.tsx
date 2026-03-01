@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, KeyboardEvent } from 'react';
+import { useState, useCallback, KeyboardEvent, use } from 'react';
 import { useUserData } from '@/store/useUserData';
 import { useConversationDetails } from '@/store/useConversationDetails';
 
@@ -7,6 +7,10 @@ export default function MessageComposer() {
     const [text, setText] = useState('');
     const { selectedConversation, addMessageToConversation } = useConversationDetails();
     const { userData } = useUserData();
+
+    const otherParticipant = selectedConversation?.participants?.data?.find(
+        p => p.id !== userData?.id
+    );
 
     const send = useCallback(async () => {
         if (!selectedConversation || !text.trim()) return;
@@ -23,7 +27,21 @@ export default function MessageComposer() {
         addMessageToConversation(selectedConversation.id, msg);
         setText('');
 
-        // TODO: call backend API to actually send message
+        console.log({ userData });
+        console.log({ otherParticipant });
+
+        // Call backend API to actually send message
+        fetch('/api/instagram/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                recipient_id: otherParticipant?.id || '',
+                text: msg.message,
+            }),
+        }).catch(err => {
+            console.error('Failed to send message:', err);
+            // Optionally, remove the optimistic message or mark it as failed
+        });
     }, [text, selectedConversation, addMessageToConversation, userData]);
 
     function onKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {

@@ -140,3 +140,34 @@ export async function fetchInstagramConversationMessages(
 
     return response.json();
 }
+
+export async function sendInstagramMessage(
+    text: string,
+    recipient_id: string,
+    access_token: string
+) {
+    const url = `https://graph.instagram.com/me/messages`;
+
+    const body = {
+        recipient: { id: recipient_id },
+        message: { text },
+    };
+
+    console.log('Sending message to Instagram API:', body);
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${access_token}`,
+        },
+        body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(`Instagram API error: ${error.error.message}`);
+    }
+
+    return response.json();
+}
