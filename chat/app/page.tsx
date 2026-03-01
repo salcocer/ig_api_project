@@ -2,9 +2,9 @@ import Hero from '@components/Hero';
 import LogIn from '@components/LogIn';
 import Footer from '@components/Footer';
 import Spinner from '@/components/Spinner';
+import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
 
 export default async function Home() {
     const cookieStore = cookies();
