@@ -43,7 +43,6 @@ export default function DashboardContent() {
                     <div className="w-[90%]">
                         {sorted.map((m: ConversationMessage) => {
                             const me = m?.from?.username === userData?.username;
-
                             const media =
                                 m?.shares?.data?.[0]?.link ||
                                 m?.attachments?.data?.[0]?.image_data?.url;
@@ -53,6 +52,8 @@ export default function DashboardContent() {
                                 : m?.shares?.data?.[0]?.link
                                   ? 'video'
                                   : 'text';
+
+                            console.log({ type_media });
 
                             return (
                                 <div key={m.id} className={`mb-4 ${me ? 'text-right' : ''}`}>
@@ -68,11 +69,13 @@ export default function DashboardContent() {
                                         <a
                                             href={media}
                                             target="_blank"
-                                            className={`inline-block ${me ? 'text-blue-400' : 'text-gray-400'} italic mt-1 min-h-[400px] `}>
+                                            className={`inline-block ${me ? 'text-blue-400' : 'text-gray-400'} italic mt-1 ${type_media === 'image' ? 'min-h-100' : ''}`}>
                                             {type_media === 'image' ? (
                                                 <div className="flex gap-2 flex-wrap">
                                                     {m.attachments?.data?.map((att, i) => {
-                                                        const url = att?.image_data?.url || att?.image_data?.preview_url;
+                                                        const url =
+                                                            att?.image_data?.url ||
+                                                            att?.image_data?.preview_url;
                                                         return url ? (
                                                             <img
                                                                 key={i}
