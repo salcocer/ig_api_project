@@ -1,18 +1,6 @@
-// curl -X POST "https://graph.instagram.com/v25.0/<IG_ID>/messages"
-//      -H "Authorization: Bearer <INSTAGRAM_USER_ACCESS_TOKEN>"
-//      -H "Content-Type: application/json"
-//      -d '{
-//            "recipient":{
-//                "id":"<IGSID>"
-//            },
-//            "message":{
-//               "text":"<TEXT_OR_LINK>"
-//            }
-//         }'
-
-import { sendInstagramMessage } from '@/lib/api';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { sendInstagramMessage } from '@/lib/api';
 
 export async function POST(req: Request) {
     try {

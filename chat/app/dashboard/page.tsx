@@ -1,9 +1,9 @@
 'use client';
 import { useEffect } from 'react';
 import { useUserData } from '@/store/useUserData';
+import MessageComposer from '@/components/MessageComposer';
 import { ConversationMessage, useConversationDetails } from '@/store/useConversationDetails';
 import '../globals.css';
-import MessageComposer from '@/components/MessageComposer';
 
 function formatTime(iso?: string) {
     if (!iso) return '';
@@ -52,8 +52,6 @@ export default function DashboardContent() {
                                 : m?.shares?.data?.[0]?.link
                                   ? 'video'
                                   : 'text';
-
-                            console.log({ type_media });
 
                             return (
                                 <div key={m.id} className={`mb-4 ${me ? 'text-right' : ''}`}>

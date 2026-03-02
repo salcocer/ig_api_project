@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import ConversationDetail from './ConversationDetail';
 import useKeysConversation from '@/hooks/useKeysConversation';
+import { useEffect, useState } from 'react';
 
 export type Conversation = {
     id: string;

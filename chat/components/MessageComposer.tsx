@@ -1,15 +1,15 @@
 'use client';
-import { useState, useCallback, KeyboardEvent, use } from 'react';
 import { useUserData } from '@/store/useUserData';
 import { useConversationDetails } from '@/store/useConversationDetails';
+import { useState, useCallback, KeyboardEvent } from 'react';
 
 export default function MessageComposer() {
     const [text, setText] = useState('');
-    const { selectedConversation, addMessageToConversation } = useConversationDetails();
     const { userData } = useUserData();
+    const { selectedConversation, addMessageToConversation } = useConversationDetails();
 
     const otherParticipant = selectedConversation?.participants?.data?.find(
-        p => p.id !== userData?.id
+        p => p.username !== userData?.username
     );
 
     const send = useCallback(async () => {
@@ -26,9 +26,6 @@ export default function MessageComposer() {
         // optimistic local update
         addMessageToConversation(selectedConversation.id, msg);
         setText('');
-
-        console.log({ userData });
-        console.log({ otherParticipant });
 
         // Call backend API to actually send message
         fetch('/api/instagram/messages', {
@@ -51,9 +48,7 @@ export default function MessageComposer() {
         }
     }
 
-    if (!selectedConversation) return null;
-
-    return (
+    return selectedConversation ? (
         <div className="bottom-0 h-18 right-0 w-full p-4 border-t border-gray-300 flex items-center gap-3  z-50">
             <button className="p-2 rounded-full hover:bg-gray-200" aria-label="emoji">
                 😊
@@ -74,5 +69,5 @@ export default function MessageComposer() {
                 Send
             </button>
         </div>
-    );
+    ) : null;
 }

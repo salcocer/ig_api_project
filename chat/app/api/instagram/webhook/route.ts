@@ -33,7 +33,6 @@ function verifySignature(rawBody: string, signatureHeader: string | null) {
 }
 
 export async function GET(request: Request) {
-    console.log('Received Instagram webhook verification request', request);
     const url = new URL(request.url);
     const mode = url.searchParams.get('hub.mode');
     const token = url.searchParams.get('hub.verify_token');
