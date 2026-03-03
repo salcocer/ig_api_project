@@ -13,7 +13,7 @@ function formatTime(iso?: string) {
 
 export default function DashboardContent() {
     const { userData } = useUserData();
-    const { selectedConversation } = useConversationDetails();
+    const { selectedConversation, selectedConversationId } = useConversationDetails();
     const messages = selectedConversation?.messages?.data ?? [];
 
     const sorted = [...messages].sort(
@@ -39,7 +39,7 @@ export default function DashboardContent() {
             ) : (
                 <div
                     id="messages-container"
-                    className="flex p-4 overflow-y-auto items-center justify-center mb-2 pb-10">
+                    className="flex p-4 overflow-y-auto items-center justify-center mb-2 pb-14 sm:pb-10">
                     <div className="w-[90%]">
                         {sorted.map((m: ConversationMessage) => {
                             const me = m?.from?.username === userData?.username;
@@ -56,7 +56,8 @@ export default function DashboardContent() {
                             return (
                                 <div key={m.id} className={`mb-4 ${me ? 'text-right' : ''}`}>
                                     <div className="text-xs text-gray-400">
-                                        You · {formatTime(m.created_time)}
+                                        {me ? 'You' : m?.from?.username} ·{' '}
+                                        {formatTime(m.created_time)}
                                     </div>
                                     {m.message ? (
                                         <div

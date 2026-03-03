@@ -1,11 +1,11 @@
 import crypto from 'crypto';
 import { handleInstagramWebhook } from '@store/instagramWebhookHandler';
 
-const VERIFY_TOKEN = process.env.INSTAGRAM_WEBHOOK_VERIFY_TOKEN || process.env.WEBHOOK_VERIFY_TOKEN;
-const APP_SECRET = process.env.FACEBOOK_APP_SECRET || process.env.INSTAGRAM_APP_SECRET;
+const VERIFY_TOKEN = process.env.NEXT_PUBLIC_INSTAGRAM_WEBHOOK_VERIFY_TOKEN || '';
+const APP_SECRET = process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET;
 
 function verifySignature(rawBody: string, signatureHeader: string | null) {
-    if (!APP_SECRET) return true; // no secret configured, skip verification
+    if (!APP_SECRET) return false;
     if (!signatureHeader) return false;
 
     // header expected like 'sha1=...' or 'sha256=...'
