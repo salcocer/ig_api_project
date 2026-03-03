@@ -1,9 +1,9 @@
 'use client';
 
+import { io } from 'socket.io-client';
+import { useEffect, useState } from 'react';
 import ConversationDetail from './ConversationDetail';
 import useKeysConversation from '@/hooks/useKeysConversation';
-// import { useWebhookEvents } from '@/store/useWebhookEvents';
-import { useEffect, useState } from 'react';
 
 export type Conversation = {
     id: string;
@@ -20,29 +20,20 @@ export default function Conversations() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [conversations, setConversations] = useState<Conversation[]>([]);
-    // const { events, setEvents } = useWebhookEvents();
 
     useKeysConversation(conversations);
 
-    // useEffect(() => {
-    //     // This effect runs whenever the events array changes, allowing you to react to new webhook events
-    //     console.log('Webhook events updated:', events);
-    //     // You can add logic here to update conversations based on new events if needed
-    // }, [events]);
-
-    // useEffect(() => {
-    //     // Load persisted webhook events from the server and populate the zustand store
-    //     fetch('/api/instagram/webhook/events')
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             console.log('Loaded persisted webhook events:', data);
-    //             if (data && Array.isArray(data.data)) {
-    //                 console.log('Loaded persisted webhook events:', data);
-    //                 setEvents(data.data);
-    //             }
-    //         })
-    //         .catch(err => console.warn('Failed to load persisted webhook events', err));
-    // }, []);
+    useEffect(() => {
+        const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000');
+        socket.on('ig_event', (event: any) => {
+            // update state/UI, show toast, increment unread count, etc.
+            console.log('New IG event', event);
+        });
+        return () => {
+            socket.off('ig_event');
+            socket.disconnect();
+        };
+    }, []);
 
     useEffect(() => {
         fetch('/api/instagram/conversations')

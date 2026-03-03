@@ -71,5 +71,21 @@ export async function POST(request: Request) {
         console.error('Handler error', e);
     }
 
+    // inside app/api/instagram/webhook/route.ts (after processing)
+    try {
+        // notify socket server (use env var if set)
+        const broadcastUrl =
+            process.env.SOCKET_BROADCAST_URL ||
+            process.env.NEXT_PUBLIC_SOCKET_BROADCAST_URL ||
+            'http://localhost:4000/broadcast';
+        await fetch(broadcastUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body || {}),
+        });
+    } catch (e) {
+        console.error('Broadcast error', e);
+    }
+
     return new Response('EVENT_RECEIVED', { status: 200 });
 }
