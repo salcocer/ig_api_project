@@ -78,6 +78,7 @@ export async function POST(request: Request) {
             process.env.SOCKET_BROADCAST_URL ||
             process.env.NEXT_PUBLIC_SOCKET_BROADCAST_URL ||
             'http://localhost:4000/broadcast';
+
         await fetch(broadcastUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

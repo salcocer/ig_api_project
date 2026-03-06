@@ -3,6 +3,7 @@ import Conversations from '@/components/Conversations';
 import ConversationFetcher from '@/components/ConversationFetcher';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { Toaster } from '@/components/ui/sonner';
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {
     const cookieStore = cookies();
@@ -18,6 +19,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
 
     return (
         <div className="flex h-screen overflow-hidden">
+            <Toaster />
             <div className="border-r border-gray-300 w-30 sm:w-60 md:w-81 bg-(--bg-gray-color)">
                 <Profile />
                 <Conversations />

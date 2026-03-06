@@ -1,9 +1,10 @@
 'use client';
-
 import { io } from 'socket.io-client';
+import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 import ConversationDetail from './ConversationDetail';
 import useKeysConversation from '@/hooks/useKeysConversation';
+import { useWebhookEvents } from '@/store/useWebhookEvents';
 
 export type Conversation = {
     id: string;
@@ -21,6 +22,8 @@ export default function Conversations() {
     const [error, setError] = useState<string | null>(null);
     const [conversations, setConversations] = useState<Conversation[]>([]);
 
+    const { addEvent } = useWebhookEvents();
+
     useKeysConversation(conversations);
 
     useEffect(() => {
@@ -28,6 +31,14 @@ export default function Conversations() {
         socket.on('ig_event', (event: any) => {
             // update state/UI, show toast, increment unread count, etc.
             console.log('New IG event', event);
+
+            addEvent({
+                event,
+                checked: false,
+                received_at: new Date().toISOString(),
+            });
+
+            toast('Event has been created', { position: 'top-center' });
         });
         return () => {
             socket.off('ig_event');
