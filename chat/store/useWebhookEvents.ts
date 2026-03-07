@@ -22,13 +22,15 @@ export type Entry = {
     ];
 };
 
+export type Event = {
+    object: string;
+    entry: Entry[];
+};
+
 export type WebhookEvent = {
     received_at: string;
     checked: boolean;
-    event: {
-        object: string;
-        entry: Entry[];
-    };
+    event: Event;
 };
 
 export type WebhookEventsStore = {

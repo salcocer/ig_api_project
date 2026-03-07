@@ -2,10 +2,6 @@ import { cookies } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
 import { fetchInstagramConversationMessages } from '@/lib/api';
 
-// curl -i -X GET "https://graph.instagram.com/v25.0/<MESSAGE_ID>
-//     &fields=id,created_time,from,to,message
-//     &access_token=<INSTAGRAM_ACCESS_TOKEN>"
-
 export async function GET(
     req: NextRequest,
     context: { params: { message_id: string } | Promise<{ message_id: string }> }
