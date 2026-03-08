@@ -6,8 +6,9 @@ let sharedSocket: Socket | null = null;
 export function initSocket(url?: string) {
     if (typeof window === 'undefined') return null;
     if (!sharedSocket) {
-        const defaultOrigin =
-            typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+        // const defaultOrigin =
+        // typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+        const defaultOrigin = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3000';
         const target = url || defaultOrigin;
         sharedSocket = io(target, { transports: ['websocket', 'polling'] });
     }
