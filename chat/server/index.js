@@ -8,7 +8,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const PORT = parseInt(process.env.PORT, 10) || 3000;
-const SOCKET_CORS_ORIGIN = process.env.NEXT_SOCKET_CORS_ORIGIN || '*';
+const SOCKET_CORS_ORIGIN = process.env.NEXT_PUBLIC_SOCKET_URL || '*';
 
 let io;
 let server;

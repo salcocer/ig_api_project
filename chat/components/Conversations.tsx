@@ -34,6 +34,8 @@ export default function Conversations() {
     useEffect(() => {
         const socket = initSocket() || io();
         socket.on('ig_event', (event: Event) => {
+            console.log('Received IG event via socket', event);
+
             const senderId = event.entry[0].messaging[0].sender.id;
             const findSenderUsername = participants.find(p => p.id === senderId)?.username;
 
