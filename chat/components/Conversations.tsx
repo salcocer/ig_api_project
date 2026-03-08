@@ -1,5 +1,6 @@
 'use client';
 import { io } from 'socket.io-client';
+import { initSocket } from '@/hooks/useSocket';
 import { toast } from 'sonner';
 import ConversationDetail from './ConversationDetail';
 import useKeysConversation from '@/hooks/useKeysConversation';
@@ -31,12 +32,12 @@ export default function Conversations() {
     const participants = conversations.flatMap(conv => conv.participants.data);
 
     useEffect(() => {
-        const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000');
+        const socket = initSocket() || io();
         socket.on('ig_event', (event: Event) => {
             const senderId = event.entry[0].messaging[0].sender.id;
             const findSenderUsername = participants.find(p => p.id === senderId)?.username;
 
-            if (event.entry[0].messaging[0].message.is_echo) return;
+            if (event.entry[0].messaging[0].message?.is_echo) return;
 
             if (findSenderUsername) {
                 addEvent({
@@ -49,7 +50,7 @@ export default function Conversations() {
                 const findConversationForSender = conversations.find(conv =>
                     conv.participants.data.some(p => p.id === senderId)
                 );
-                const newMessage = event.entry[0].messaging[0].message.text;
+                const newMessage = event.entry[0].messaging[0].message?.text;
 
                 addMessageToConversation(findConversationForSender?.id || '', {
                     id: `temp-${Date.now()}`,
@@ -74,7 +75,7 @@ export default function Conversations() {
         });
         return () => {
             socket.off('ig_event');
-            socket.disconnect();
+            // do not disconnect shared socket here; keep alive for other components
         };
     }, [participants]);
 
