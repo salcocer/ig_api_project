@@ -75,9 +75,7 @@ export async function POST(request: Request) {
     try {
         // notify socket server (use env var if set)
         const broadcastUrl =
-            process.env.SOCKET_BROADCAST_URL ||
-            process.env.NEXT_PUBLIC_SOCKET_BROADCAST_URL ||
-            'http://localhost:4000/broadcast';
+            process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000/broadcast';
 
         await fetch(broadcastUrl, {
             method: 'POST',
