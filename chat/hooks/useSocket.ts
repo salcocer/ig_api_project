@@ -6,10 +6,12 @@ let sharedSocket: Socket | null = null;
 export function initSocket(url?: string) {
     if (typeof window === 'undefined') return null;
     if (!sharedSocket) {
-        const envUrl = (process.env.NEXT_PUBLIC_SOCKET_URL as string) || undefined;
-        const defaultOrigin =
-            typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
-        const target = url || envUrl || defaultOrigin;
+        // const envUrl = (process.env.NEXT_PUBLIC_SOCKET_URL as string) || undefined;
+        // const defaultOrigin =
+        // typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+        // const target = url || envUrl || defaultOrigin;
+        const target =
+            window.location.origin || process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3000';
         const opts = {
             transports: ['websocket', 'polling'],
         };
