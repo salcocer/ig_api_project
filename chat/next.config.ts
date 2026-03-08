@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
                 hostname: 'scontent.cdninstagram.com',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'scontent-lax3-1.cdninstagram.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'scontent-*.cdninstagram.com',
+                pathname: '/**',
+            },
         ],
     },
 };

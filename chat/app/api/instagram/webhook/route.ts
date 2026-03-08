@@ -74,8 +74,7 @@ export async function POST(request: Request) {
     // inside app/api/instagram/webhook/route.ts (after processing)
     try {
         // notify socket server (use env var if set)
-        const broadcastUrl =
-            process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000/broadcast';
+        const broadcastUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost/broadcast';
 
         await fetch(broadcastUrl, {
             method: 'POST',
