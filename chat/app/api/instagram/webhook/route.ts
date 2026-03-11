@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { handleInstagramWebhook } from '@store/instagramWebhookHandler';
+// import { handleInstagramWebhook } from '@store/instagramWebhookHandler';
 
 const VERIFY_TOKEN = process.env.NEXT_PUBLIC_INSTAGRAM_WEBHOOK_VERIFY_TOKEN || '';
 const APP_SECRET = process.env.NEXT_PUBLIC_INSTAGRAM_APP_SECRET;
@@ -55,7 +55,6 @@ export async function POST(request: Request) {
         return new Response('Invalid signature', { status: 403 });
     }
 
-    // Parse and handle incoming event(s)
     let body: any = null;
     try {
         body = JSON.parse(raw);
@@ -64,16 +63,15 @@ export async function POST(request: Request) {
         console.warn('Webhook: failed to parse JSON body', err);
     }
 
-    // Dispatch to handler for processing/persistence
-    try {
-        await handleInstagramWebhook(body);
-    } catch (e) {
-        console.error('Handler error', e);
-    }
+    // Dispatch to handler for processing/persistence. Write in the json file
+    // try {
+    //     await handleInstagramWebhook(body);
+    // } catch (e) {
+    //     console.error('Handler error', e);
+    // }
 
-    // inside app/api/instagram/webhook/route.ts (after processing)
     try {
-        // notify socket server (use env var if set)
+        // notify socket server
         const broadcastUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost/broadcast';
 
         await fetch(broadcastUrl, {
