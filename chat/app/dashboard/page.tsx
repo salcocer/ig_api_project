@@ -1,4 +1,5 @@
 'use client';
+import { isEmpty } from 'lodash';
 import { useEffect } from 'react';
 import { useUserData } from '@/store/useUserData';
 import MessageComposer from '@/components/MessageComposer';
@@ -46,7 +47,6 @@ export default function DashboardContent() {
                             const media =
                                 m?.shares?.data?.[0]?.link ||
                                 m?.attachments?.data?.[0]?.image_data?.url;
-
                             const type_media = m?.attachments?.data?.[0]?.image_data
                                 ? 'image'
                                 : m?.shares?.data?.[0]?.link
@@ -59,7 +59,7 @@ export default function DashboardContent() {
                                         {me ? 'You' : m?.from?.username} ·{' '}
                                         {formatTime(m.created_time)}
                                     </div>
-                                    {m.message ? (
+                                    {!isEmpty(m.message) && type_media === 'text' ? (
                                         <div
                                             className={`inline-block ${me ? 'bg-blue-100 text-black' : 'bg-gray-300 text-black'} rounded-lg px-3 py-2 mt-1 text-sm sm:text-lg`}>
                                             {m.message}
