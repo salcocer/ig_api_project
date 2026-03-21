@@ -1,18 +1,42 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/field";
+
+async function postCodeToServer(code: string) {
+  const res = await fetch("/api/auth/exchange", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code }),
+  }).catch((error) => {
+    throw new Error(`${error.message}`);
+  });
+
+  return res.json();
+}
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const SCOPE = process.env.NEXT_PUBLIC_INSTAGRAM_SCOPE || "";
+  const CLIENT_ID = process.env.NEXT_PUBLIC_INSTAGRAM_APP_ID || "";
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_INSTAGRAM_REDIRECT_URI || "";
+
+  const auth_code = `https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
+    REDIRECT_URI,
+  )}&response_type=code&scope=${encodeURIComponent(SCOPE)}`;
+
+  const handleLogin = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (typeof window !== "undefined") window.location.href = auth_code; // Navigate the browser to Instagram's OAuth page (external URL)
+  };
+
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props}>
       <FieldGroup>
@@ -22,11 +46,12 @@ export function LoginForm({
             Enter your email below to login to your account
           </p>
         </div>
+        {/*
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
           <Input id="email" type="email" placeholder="m@example.com" required />
         </Field>
-        <Field>
+         <Field>
           <div className="flex items-center">
             <FieldLabel htmlFor="password">Password</FieldLabel>
             <a
@@ -37,12 +62,15 @@ export function LoginForm({
             </a>
           </div>
           <Input id="password" type="password" required />
-        </Field>
+        </Field> 
+        */}
         <Field>
-          <Button type="submit">Login</Button>
+          <Button type="submit" onClick={handleLogin}>
+            Login with Instagram
+          </Button>
         </Field>
-        <FieldSeparator>Or continue with</FieldSeparator>
-        <Field>
+        {/* <FieldSeparator>Or continue with</FieldSeparator> */}
+        {/* <Field>
           <Button variant="outline" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
@@ -58,8 +86,8 @@ export function LoginForm({
               Sign up
             </a>
           </FieldDescription>
-        </Field>
+        </Field> */}
       </FieldGroup>
     </form>
-  )
+  );
 }
