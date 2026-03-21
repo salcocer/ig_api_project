@@ -2,11 +2,11 @@
 import { LoginForm } from "@/components/login-form";
 import SpinnerBackground from "@/components/ui/spinner-background";
 import { MessageCircle } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 async function postCodeToServer(code: string) {
-  const res = await fetch("/api/auth/exchange", {
+  const res = await fetch("/api/auth", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ code }),
