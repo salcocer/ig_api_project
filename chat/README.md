@@ -1,3 +1,7 @@
+## Todos
+
+- Check the errors and show error message
+
 # Business Login for Instagram
 
 Business Login is a custom login flow that allows your app to ask for permissions to access your app **user's Instagram professional account** data and to get **access token** to use in your **app's API requests**.
