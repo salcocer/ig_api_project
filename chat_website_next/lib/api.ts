@@ -51,3 +51,50 @@ export async function fetchLongLivedToken(
 
   return response.json();
 }
+
+// :: CONVERSATIONS ::
+export async function fetchInstagramConversations(
+  params: Record<string, string> = {},
+  access_token: string,
+) {
+  const url = new URL(`https://graph.instagram.com/me/conversations`);
+
+  url.search = new URLSearchParams({
+    ...params,
+    access_token,
+  }).toString();
+
+  const response = await fetch(url, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Instagram API error: ${error.error.message}`);
+  }
+
+  return response.json();
+}
+
+export async function fetchInstagramConversationMessages(
+  message_id: string,
+  params: Record<string, string> = {},
+  access_token: string,
+) {
+  const url = new URL(`https://graph.instagram.com/${message_id}`);
+  url.search = new URLSearchParams({
+    ...params,
+    access_token,
+  }).toString();
+
+  const response = await fetch(url, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Instagram API error: ${error.error.message}`);
+  }
+
+  return response.json();
+}

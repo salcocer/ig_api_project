@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 
 import * as React from "react";
 import {
@@ -57,84 +58,7 @@ const data = {
       icon: SquareTerminal,
       isActive: true,
       items: [],
-      // {
-      //   title: "History",
-      //   url: "#",
-      // },
-      // {
-      //   title: "Starred",
-      //   url: "#",
-      // },
-      // {
-      //   title: "Settings",
-      //   url: "#",
-      // },
     },
-    // {
-    //   title: "Models",
-    //   url: "#",
-    //   icon: Bot,
-    //   items: [
-    //     {
-    //       title: "Genesis",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Explorer",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Quantum",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Documentation",
-    //   url: "#",
-    //   icon: BookOpen,
-    //   items: [
-    //     {
-    //       title: "Introduction",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Get Started",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tutorials",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Changelog",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Settings",
-    //   url: "#",
-    //   icon: Settings2,
-    //   items: [
-    //     {
-    //       title: "General",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Team",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Billing",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Limits",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
   ],
   projects: [
     {
@@ -155,14 +79,74 @@ const data = {
   ],
 };
 
+const ChatSection = [
+  {
+    title: "Chats",
+    url: "#",
+    icon: SquareTerminal,
+    isActive: true,
+    items: [],
+  },
+];
+
+// {
+//   "updated_time": "2026-03-23T08:34:15+0000",
+//   "participants": {
+//     "data": [
+//       {
+//         "username": "stalynalejandro_alcocer",
+//         "id": "17841446739229368"
+//       }
+//     ]
+//   },
+//   "id": "aWdfZAG06MzQwMjgyMzY2ODQxNzEwMzAxMjQ0MjU5MDI1NTAxMjM5NTgwNTYz"
+// },
+
+export type ConversationsType = {
+  updated_time: string;
+  participants: {
+    data: {
+      username: string;
+      id: string;
+    }[];
+  };
+  id: string;
+};
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [chatsData, setChatsData] = useState(ChatSection);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch("/api/instagram/conversations")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) throw new Error(data.error);
+        const conversations: ConversationsType[] = data?.data || [];
+        console.log("Fetched conversations:", data?.data);
+
+        // setChatsData((prev) => [
+        //   ...prev,
+        //   { ...prev[0], items: data.data || [] },
+        // ]);
+        // setConversations(data.data || []);
+        // setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching conversations:", err);
+        // setError(err.message || "Failed to load conversations.");
+        // setLoading(false);
+      });
+  }, []);
+
   return (
     <Sidebar collapsible="icon" {...props}>
-      {/* <SidebarHeader> */}
-      {/* <TeamSwitcher teams={data.teams} /> */}
-      {/* </SidebarHeader> */}
+      <SidebarHeader>
+        {/* <TeamSwitcher teams={data.teams} />{" "} */}
+      </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={chatsData} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
