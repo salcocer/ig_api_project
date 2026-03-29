@@ -79,28 +79,13 @@ const data = {
   ],
 };
 
-const ChatSection = [
-  {
-    title: "Chats",
-    url: "#",
-    icon: SquareTerminal,
-    isActive: true,
-    items: [],
-  },
-];
-
-// {
-//   "updated_time": "2026-03-23T08:34:15+0000",
-//   "participants": {
-//     "data": [
-//       {
-//         "username": "stalynalejandro_alcocer",
-//         "id": "17841446739229368"
-//       }
-//     ]
-//   },
-//   "id": "aWdfZAG06MzQwMjgyMzY2ODQxNzEwMzAxMjQ0MjU5MDI1NTAxMjM5NTgwNTYz"
-// },
+const ChatSection = {
+  title: "Chats",
+  url: "#",
+  icon: SquareTerminal,
+  isActive: true,
+  items: [] as { title: string; url: string }[],
+};
 
 export type ConversationsType = {
   updated_time: string;
@@ -124,19 +109,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       .then((data) => {
         if (data.error) throw new Error(data.error);
         const conversations: ConversationsType[] = data?.data || [];
-        console.log("Fetched conversations:", data?.data);
 
-        // setChatsData((prev) => [
-        //   ...prev,
-        //   { ...prev[0], items: data.data || [] },
-        // ]);
-        // setConversations(data.data || []);
-        // setLoading(false);
+        setChatsData((prev) => {
+          return {
+            ...prev,
+            items: conversations.map((conv) => ({
+              title:
+                conv?.participants?.data[1]?.username ||
+                conv?.participants?.data[0]?.username,
+              url: `${conv.id}`,
+            })),
+          };
+        });
       })
       .catch((err) => {
         console.error("Error fetching conversations:", err);
-        // setError(err.message || "Failed to load conversations.");
-        // setLoading(false);
       });
   }, []);
 
