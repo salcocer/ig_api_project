@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { ChevronRight, type LucideIcon } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
@@ -19,7 +20,7 @@ export function NavMain({
     items: {
         title: string;
         url: string;
-        icon?: LucideIcon;
+        icon?: string | LucideIcon;
         isActive?: boolean;
         items?: {
             title: string;
@@ -33,7 +34,6 @@ export function NavMain({
         <SidebarGroup>
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
-                {/* {items.map((item) => ( */}
                 <Collapsible
                     key={items.title}
                     asChild
@@ -42,7 +42,14 @@ export function NavMain({
                     <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
                             <SidebarMenuButton tooltip={items?.title}>
-                                {items?.icon && <items.icon />}
+                                {/* {items?.icon && <items.icon />} */}
+                                <Image
+                                    src={(items?.icon as string) || ''}
+                                    alt="app_icon"
+                                    width={20}
+                                    height={20}
+                                    className="dark:invert"
+                                />
                                 <span>{items?.title}</span>
                                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                             </SidebarMenuButton>
@@ -66,7 +73,6 @@ export function NavMain({
                         </CollapsibleContent>
                     </SidebarMenuItem>
                 </Collapsible>
-                {/* ))} */}
             </SidebarMenu>
         </SidebarGroup>
     );

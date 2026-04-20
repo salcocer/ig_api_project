@@ -80,9 +80,9 @@ const data = {
 };
 
 const ChatSection = {
-    title: 'Chats',
+    title: 'Instagram Chats',
     url: '#',
-    icon: SquareTerminal,
+    icon: 'ig_icon.svg',
     isActive: true,
     items: [] as { title: string; url: string }[],
 };
