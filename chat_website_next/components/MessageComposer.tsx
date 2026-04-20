@@ -49,7 +49,7 @@ export default function MessageComposer() {
     }
 
     return selectedConversation ? (
-        <div className="fixed sm:sticky bottom-0 h-18 right-0 w-full p-4 border-t border-gray-300 flex items-center gap-3 z-50 bg-(--bg-color)">
+        <div className=" bg-background  bottom-0 h-18 right-0 w-full p-4 border-t  items-center flex">
             <button className="p-2 rounded-full hover:bg-gray-200" aria-label="emoji">
                 😊
             </button>

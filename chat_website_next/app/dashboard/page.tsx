@@ -32,7 +32,7 @@ export default function Page() {
     }, [messages]);
 
     return (
-        <div className="flex flex-col h-full w-full">
+        <div className="flex flex-col w-full h-full">
             {!messages.length ? (
                 <div className="flex-1 p-4 flex items-center justify-center text-gray-500">
                     No messages
@@ -59,7 +59,7 @@ export default function Page() {
                                     </div>
                                     {!isEmpty(m.message) && type_media === 'text' ? (
                                         <div
-                                            className={`inline-block ${me ? 'bg-blue-100 text-black' : 'bg-gray-300 text-black'} rounded-lg px-3 py-2 mt-1 text-sm sm:text-lg`}>
+                                            className={`inline-block ${me ? 'bg-blue-100 text-black' : 'bg-gray-300 text-black'} rounded-lg px-3 py-2 mt-1 text-sm`}>
                                             {m.message}
                                         </div>
                                     ) : (
