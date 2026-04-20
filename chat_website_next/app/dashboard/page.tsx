@@ -1,9 +1,9 @@
 'use client';
-import MessageComposer from '@/components/MessageComposer';
-import { useConversationDetails } from '@/store/useConversationDetails';
-import { useUserData } from '@/store/useUserData';
 import { isEmpty } from 'lodash';
+import { useUserData } from '@/store/useUserData';
 import { useEffect, useLayoutEffect } from 'react';
+import MessageComposer from '@/components/MessageComposer';
+import { ConversationMessage, useConversationDetails } from '@/store/useConversationDetails';
 
 function formatTime(iso?: string) {
     if (!iso) return '';
@@ -83,7 +83,9 @@ export default function Page() {
                                                     })}
                                                 </div>
                                             ) : type_media === 'video' ? (
-                                                <video controls className="w-60 h-fit rounded">
+                                                <video
+                                                    controls
+                                                    className="min-h-100 w-60 h-fit rounded">
                                                     <source src={media} type="video/mp4" />
                                                 </video>
                                             ) : null}
