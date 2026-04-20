@@ -1,5 +1,4 @@
 'use client';
-
 import MessageComposer from '@/components/MessageComposer';
 import { useConversationDetails } from '@/store/useConversationDetails';
 import { useUserData } from '@/store/useUserData';
