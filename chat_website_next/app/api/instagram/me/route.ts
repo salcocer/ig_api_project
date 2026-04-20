@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { fetchInstagramConversations } from '@/lib/api';
+import { NextResponse } from 'next/server';
+import { fetchInstagramData } from '@/lib/api';
 
 export async function GET(req: Request) {
     try {
@@ -15,13 +15,13 @@ export async function GET(req: Request) {
             access_token = process.env.NEXT_PUBLIC_ACCESS_TOKEN || '';
         }
 
-        const data = await fetchInstagramConversations(
+        const data = await fetchInstagramData(
+            '/me',
             {
-                platform: 'instagram',
-                fields: 'updated_time,participants{username,id}',
+                fields: 'name, username, profile_picture_url, followers_count, follows_count, media_count',
             },
             access_token
-        ).catch((error: { message: string | undefined }) => {
+        ).catch(error => {
             throw new Error(error?.message);
         });
 
