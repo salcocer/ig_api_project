@@ -46,7 +46,6 @@ export default function Profile() {
                     </div>
                 </div>
             </div>
-
             {/* <Stories /> */}
         </div>
     );
