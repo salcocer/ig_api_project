@@ -30,6 +30,9 @@ export function NavMain({
 }) {
     const { selectedConversationId, setSelectedConversationId } = useConversationDetails();
 
+    console.log('selectedConversationId', selectedConversationId);
+    console.log({ items });
+
     return (
         <SidebarGroup>
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -57,15 +60,18 @@ export function NavMain({
                         <CollapsibleContent>
                             <SidebarMenuSub>
                                 {items?.items?.map(subItem => (
-                                    <SidebarMenuSubItem key={subItem.title}>
-                                        <SidebarMenuSubButton asChild>
-                                            <div
-                                                style={{ cursor: 'pointer' }}
-                                                onClick={() =>
-                                                    setSelectedConversationId(subItem?.url)
-                                                }>
-                                                <span>{subItem.title}</span>
-                                            </div>
+                                    <SidebarMenuSubItem
+                                        key={subItem.title}
+                                        onClick={() => setSelectedConversationId(subItem?.url)}
+                                        className="cursor-pointer">
+                                        <SidebarMenuSubButton
+                                            asChild
+                                            className={
+                                                selectedConversationId === subItem.url
+                                                    ? 'bg-gray-100 dark:bg-gray-700 font-bold'
+                                                    : ''
+                                            }>
+                                            <span>{subItem.title}</span>
                                         </SidebarMenuSubButton>
                                     </SidebarMenuSubItem>
                                 ))}
