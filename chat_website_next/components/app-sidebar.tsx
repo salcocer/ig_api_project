@@ -27,6 +27,16 @@ import {
     SidebarRail,
 } from '@/components/ui/sidebar';
 
+import { io } from 'socket.io-client';
+import { initSocket } from '@/hooks/useSocket';
+import { toast } from 'sonner';
+// import ConversationDetail from './ConversationDetail';
+// import useKeysConversation from '@/hooks/useKeysConversation';
+// import { useEffect, useState } from 'react';
+import { Event, useWebhookEvents } from '@/store/useWebhookEvents';
+import { useConversationDetails } from '@/store/useConversationDetails';
+// import { useConversationDetails } from '@/store/useConversationDetails';
+
 // This is sample data.
 const data = {
     user: {
@@ -98,10 +108,75 @@ export type ConversationsType = {
     id: string;
 };
 
+export type Conversation = {
+    id: string;
+    updated_time: string;
+    participants: {
+        data: {
+            username: string;
+            id: string;
+        }[];
+    };
+};
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const [chatsData, setChatsData] = useState(ChatSection);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    // const [conversations, setConversations] = useState<ConversationsType[]>([]);
+
+    const { addMessageToConversation } = useConversationDetails();
+    // const participants = conversations.flatMap(conv => conv.participants.data);
+
+    useEffect(() => {
+        const socket = initSocket() || io();
+        socket.on('ig_event', (event: Event) => {
+            console.log('Received IG event via socket', event);
+
+            const senderId = event.entry[0].messaging[0].sender.id;
+            // const findSenderUsername = participants.find(p => p.id === senderId)?.username;
+
+            if (event.entry[0].messaging[0].message?.is_echo) return;
+
+            if (findSenderUsername) {
+                // addEvent({
+                //     event: event,
+                //     checked: false,
+                //     received_at: new Date().toISOString(),
+                // });
+
+                const senderId = event.entry[0].messaging[0].sender.id;
+                const findConversationForSender = conversations.find(conv =>
+                    conv.participants.data.some(p => p.id === senderId)
+                );
+                const newMessage = event.entry[0].messaging[0].message?.text;
+
+                addMessageToConversation(findConversationForSender?.id || '', {
+                    id: `temp-${Date.now()}`,
+                    created_time: new Date().toISOString(),
+                    from: {
+                        username: findSenderUsername,
+                        id: senderId,
+                    },
+                    to: {
+                        data: [],
+                    },
+                    message: newMessage,
+                });
+
+                toast.success(
+                    `${findSenderUsername}: ${event.entry[0].messaging[0].message.text}`,
+                    {
+                        position: 'top-center',
+                    }
+                );
+            }
+        });
+        return () => {
+            socket.off('ig_event');
+            // do not disconnect shared socket here; keep alive for other components
+        };
+    }, [participants]);
 
     useEffect(() => {
         fetch('/api/instagram/conversations')
