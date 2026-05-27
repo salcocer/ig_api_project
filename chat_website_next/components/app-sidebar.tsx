@@ -176,7 +176,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             socket.off('ig_event');
             // do not disconnect shared socket here; keep alive for other components
         };
-    }, [participants]);
+    // }, [participants]);
+    }, []);
 
     useEffect(() => {
         fetch('/api/instagram/conversations')
